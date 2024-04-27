@@ -1,0 +1,10 @@
+const express=require('express');
+const router=express.Router();
+const nithyaThadiyarathanaiController=require('../controllers/nithya_thadiyarathanai_controller');
+router.post('/createPrice',nithyaThadiyarathanaiController.createPrice);
+router.post('/getPrice',nithyaThadiyarathanaiController.getPrice);
+router.post('/deletePrice',nithyaThadiyarathanaiController.deletePrice);
+router.post('/newBooking',nithyaThadiyarathanaiController.newBooking);
+router.post('/myBookings',nithyaThadiyarathanaiController.myBookings);
+router.post('/bookings',nithyaThadiyarathanaiController.bookings);
+module.exports=router;
