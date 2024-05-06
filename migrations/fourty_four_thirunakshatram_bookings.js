@@ -40,7 +40,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       is_approved: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
       is_paid: {
         type: Sequelize.BOOLEAN
@@ -52,6 +52,9 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      approved_by:{
+        type: Sequelize.STRING
       }
     });
   },

@@ -7,4 +7,5 @@ router.post('/deleteDate',goodaraivalliController.deleteDate);
 router.post('/newBooking',goodaraivalliController.newBooking);
 router.post('/myBookings',goodaraivalliController.myBookings);
 router.post('/bookings',goodaraivalliController.allBookings);
+router.post('/updateBooking',goodaraivalliController.updateStatus);
 module.exports=router;

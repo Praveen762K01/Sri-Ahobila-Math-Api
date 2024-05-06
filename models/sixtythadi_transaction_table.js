@@ -24,8 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     booking_count: DataTypes.STRING,
     total_value: DataTypes.STRING,
     message: DataTypes.STRING,
-    is_approved: DataTypes.BOOLEAN,
-    is_paid: DataTypes.BOOLEAN
+    is_approved: DataTypes.STRING,
+    is_paid: DataTypes.BOOLEAN,
+    approved_by:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'SixtyThadi_Transaction_Table',

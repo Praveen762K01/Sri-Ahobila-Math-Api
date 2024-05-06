@@ -7,4 +7,5 @@ router.post('/deleteDate',ponnadiController.deleteDate);
 router.post('/newBooking',ponnadiController.newBooking);
 router.post('/myBookings',ponnadiController.myBookings);
 router.post('/bookings',ponnadiController.allBookings);
+router.post('/updateBooking',ponnadiController.updateStatus);
 module.exports=router;

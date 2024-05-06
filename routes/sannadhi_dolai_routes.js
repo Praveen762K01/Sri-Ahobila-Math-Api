@@ -7,4 +7,5 @@ router.post('/deleteDate',dolaiController.deleteDate);
 router.post('/newBooking',dolaiController.newBooking);
 router.post('/myBookings',dolaiController.myBookings);
 router.post('/bookings',dolaiController.allBookings);
+router.post('/updateBooking',dolaiController.updateStatus);
 module.exports=router;

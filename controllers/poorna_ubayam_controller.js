@@ -96,6 +96,24 @@ newBooking = async (req, res) => {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
 }
+
+updateStatus =async(req,res)=>{
+    try {
+       const data={
+           approved_by:req.body.approved_by,
+           is_approved:req.body.is_approved,
+           id:req.body.id
+       }
+       await model.PoornaUbayamBookings.update(data,{where:{id:data["id"]}}).then((result) => {
+           return res.status(200).json({message:"Data updated Successfully"});
+       }).catch((err) => {
+           return res.status(500).json({ message: "Not able update booking.", error: err });
+       });
+    } catch (error) {
+       return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
 myBookings=async(req,res)=>{
     try {
        const data={
@@ -118,6 +136,7 @@ module.exports = {
     deletePrice: deletePrice,
     bookings:bookings,
     newBooking: newBooking,
-    myBookings:myBookings
+    myBookings:myBookings,
+    updateStatus:updateStatus
 
 }
