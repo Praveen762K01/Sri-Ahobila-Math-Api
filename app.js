@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRouter = require("./routes/auth_routes");
+const statusRouter = require("./routes/booking_status_routes");
 const dateRouter = require("./routes/date_routes");
 const nithyaThadiyarathanaiRouter = require('./routes/nithya_thadiyarathanai_routes');
 const poornaUbayamRouter = require('./routes/poorna_ubayam_routes');
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/status",statusRouter)
 app.use("/api/date", dateRouter);
 app.use("/api/nithyaThadiyarathanai", nithyaThadiyarathanaiRouter);
 app.use("/api/poornaUbayam", poornaUbayamRouter);
@@ -51,5 +53,6 @@ app.use('/api/sannadhiDolai', sannadhiDolaiRouter);
 app.use('/api/sixtyThadi', sixtyThadiRouter);
 app.use('/api/chatruNithyaThadi', chatruNithyaThadiRouter);
 app.use('/api/myBookings',myBookingsRouter);
+
 
 module.exports = app;
