@@ -128,6 +128,22 @@ myBookings=async(req,res)=>{
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
 }
+
+getBookingDetail = async (req, res) => {
+    try {
+        const data = {
+            id: req.body.id
+        }
+        await model.PoornaUbayamBookings.findAll({ where: {id: data["id"] } }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get data.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
 // User Website Api
 
 module.exports = {
@@ -137,6 +153,7 @@ module.exports = {
     bookings:bookings,
     newBooking: newBooking,
     myBookings:myBookings,
-    updateStatus:updateStatus
+    updateStatus:updateStatus,
+    getBookingDetail:getBookingDetail
 
 }

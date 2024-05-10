@@ -6,5 +6,6 @@ router.post('/getDate',kainkaryamController.getDatePrice);
 router.post('/deleteDate',kainkaryamController.deleteDatePrice);
 router.post('/bookings',kainkaryamController.allBookings);
 router.post('/newBooking',kainkaryamController.newBooking);
-router.post('/myBookings',kainkaryamController.myBookings)
+router.post('/myBookings',kainkaryamController.myBookings);
+router.post('/getBookingDetail',kainkaryamController.getBookingDetail);
 module.exports=router;

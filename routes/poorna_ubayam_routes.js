@@ -8,4 +8,5 @@ router.post('/newBooking',poornaUbayamController.newBooking);
 router.post('/myBookings',poornaUbayamController.myBookings);
 router.post('/bookings',poornaUbayamController.bookings);
 router.post('/updateBooking',poornaUbayamController.updateStatus);
+router.post('/getBookingDetail',poornaUbayamController.getBookingDetail);
 module.exports=router;

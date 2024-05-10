@@ -8,4 +8,5 @@ router.post('/newBooking',dolaiController.newBooking);
 router.post('/myBookings',dolaiController.myBookings);
 router.post('/bookings',dolaiController.allBookings);
 router.post('/updateBooking',dolaiController.updateStatus);
+router.post('/getBookingDetail',dolaiController.getBookingDetail);
 module.exports=router;

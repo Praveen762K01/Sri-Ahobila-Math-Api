@@ -8,4 +8,5 @@ router.post('/newBooking',samashrayanamController.newBooking);
 router.post('/myBookings',samashrayanamController.myBookings);
 router.post('/bookings',samashrayanamController.allBookings);
 router.post('/updateBooking',samashrayanamController.updateStatus);
+router.post('/getBookingDetail',samashrayanamController.getBookingDetail);
 module.exports=router;

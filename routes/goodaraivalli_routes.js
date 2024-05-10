@@ -8,4 +8,5 @@ router.post('/newBooking',goodaraivalliController.newBooking);
 router.post('/myBookings',goodaraivalliController.myBookings);
 router.post('/bookings',goodaraivalliController.allBookings);
 router.post('/updateBooking',goodaraivalliController.updateStatus);
+router.post('/getBookingDetail',goodaraivalliController.getBookingDetail);
 module.exports=router;

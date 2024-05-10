@@ -6,5 +6,6 @@ router.post('/getDate',swathiController.getDatePrice);
 router.post('/deleteDate',swathiController.deleteDatePrice);
 router.post('/bookings',swathiController.allBookings);
 router.post('/newBooking',swathiController.newBooking);
-router.post('/myBookings',swathiController.myBookings)
+router.post('/myBookings',swathiController.myBookings);
+router.post('/getBookingDetail',swathiController.getBookingDetail);
 module.exports=router;

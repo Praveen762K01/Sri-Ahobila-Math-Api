@@ -6,5 +6,6 @@ router.post('/getDate',pradhoshamController.getDatePrice);
 router.post('/deleteDate',pradhoshamController.deleteDatePrice);
 router.post('/bookings',pradhoshamController.allBookings);
 router.post('/newBooking',pradhoshamController.newBooking);
-router.post('/myBookings',pradhoshamController.myBookings)
+router.post('/myBookings',pradhoshamController.myBookings);
+router.post('/getBookingDetail',pradhoshamController.getBookingDetail);
 module.exports=router;

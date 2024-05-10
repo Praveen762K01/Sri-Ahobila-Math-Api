@@ -7,4 +7,5 @@ router.post('/deletePrice',nithyaThadiyarathanaiController.deletePrice);
 router.post('/newBooking',nithyaThadiyarathanaiController.newBooking);
 router.post('/myBookings',nithyaThadiyarathanaiController.myBookings);
 router.post('/bookings',nithyaThadiyarathanaiController.bookings);
+router.post('/getBookingDetail',nithyaThadiyarathanaiController.getBookingDetail);
 module.exports=router;

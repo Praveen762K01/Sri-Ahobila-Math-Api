@@ -6,5 +6,6 @@ router.post('/getDate',thirunakshatramController.getDatePrice);
 router.post('/deleteDate',thirunakshatramController.deleteDatePrice);
 router.post('/bookings',thirunakshatramController.allBookings);
 router.post('/newBooking',thirunakshatramController.newBooking);
-router.post('/myBookings',thirunakshatramController.myBookings)
+router.post('/myBookings',thirunakshatramController.myBookings);
+router.post('/getBookingDetail',thirunakshatramController.getBookingDetail);
 module.exports=router;
