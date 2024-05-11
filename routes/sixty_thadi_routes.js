@@ -9,4 +9,5 @@ router.post('/myBookings',Controller.myBookings);
 router.post('/bookings',Controller.allBookings);
 router.post('/updateBooking',Controller.updateStatus);
 router.post('/getBookingDetail',Controller.getBookingDetail);
+router.post('/updatePaymentStatus',Controller.updatePaymentStatus);
 module.exports=router;

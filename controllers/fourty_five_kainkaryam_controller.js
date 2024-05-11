@@ -80,8 +80,9 @@ newBooking = async (req, res) => {
             booking_count: null,
             total_value: req.body.price,
             message: req.body.message,
-            is_approved: false,
-            is_paid: false
+            is_approved: "Approved",
+            is_paid:true,
+            approved_by:""
         }
         await model.FourtyFiveKainkaryamBookings.create(data).then((result) => {
             return res.status(200).json({ message: "Kainkaryam Booked Successfully." });

@@ -81,8 +81,9 @@ newBooking = async (req, res) => {
             booking_count: req.body.booking_count,
             total_value: req.body.total_value,
             message: req.body.message,
-            is_approved: false,
-            is_paid: false
+            is_approved: "Approved",
+            is_paid:true,
+            approved_by:""
         }
         await model.PradhoshamBookings.create(data).then((result) => {
             return res.status(200).json({ message: "Swathi Booked Successfully." });

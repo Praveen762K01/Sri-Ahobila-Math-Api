@@ -80,8 +80,9 @@ newBooking = async (req, res) => {
             booking_count: null,
             total_value: req.body.total_value,
             message: req.body.message,
-            is_approved: false,
-            is_paid: false
+            is_approved: "Booked",
+            is_paid:false,
+            approved_by:""
         }
         await model.Ponnadi_Transaction_Table.create(data).then((result) => {
             return res.status(200).json({ message: "Ponnadi Booked Successfully." });
@@ -99,6 +100,22 @@ updateStatus =async(req,res)=>{
            approved_by:req.body.approved_by,
            is_approved:req.body.is_approved,
            id:req.body.id
+       }
+       await model.Ponnadi_Transaction_Table.update(data,{where:{id:data["id"]}}).then((result) => {
+           return res.status(200).json({message:"Data updated Successfully"});
+       }).catch((err) => {
+           return res.status(500).json({ message: "Not able update booking.", error: err });
+       });
+    } catch (error) {
+       return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+updatePaymentStatus=async(req,res)=>{
+    try {
+       const data={
+           id:req.body.id,
+           is_paid:true
        }
        await model.Ponnadi_Transaction_Table.update(data,{where:{id:data["id"]}}).then((result) => {
            return res.status(200).json({message:"Data updated Successfully"});
@@ -148,5 +165,6 @@ module.exports = {
     myBookings: myBookings,
     allBookings:allBookings,
     updateStatus:updateStatus,
-    getBookingDetail:getBookingDetail
+    getBookingDetail:getBookingDetail,
+    updatePaymentStatus:updatePaymentStatus
 }

@@ -6,7 +6,7 @@ createDate = async (req, res) => {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
             month_name: req.body.month_name,
-            price: null,
+            price: req.body.price,
             is_active: true
         }
         await model.BharanyasamDates.create(data).then((result) => {
@@ -80,8 +80,9 @@ newBooking = async (req, res) => {
             booking_count: req.body.booking_count,
             total_value: null,
             message: req.body.message,
-            is_approved: false,
-            is_paid: false
+            is_approved: "Booked",
+            is_paid:false,
+            approved_by:""
         }
         await model.BharanyasamBookings.create(data).then((result) => {
             return res.status(200).json({ message: "Samashrayanam Booked Successfully." });

@@ -9,4 +9,5 @@ router.post('/myBookings',ponnadiController.myBookings);
 router.post('/bookings',ponnadiController.allBookings);
 router.post('/updateBooking',ponnadiController.updateStatus);
 router.post('/getBookingDetail',ponnadiController.getBookingDetail);
+router.post('/updatePaymentStatus',ponnadiController.updatePaymentStatus);
 module.exports=router;

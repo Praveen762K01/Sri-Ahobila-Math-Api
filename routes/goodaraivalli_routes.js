@@ -9,4 +9,5 @@ router.post('/myBookings',goodaraivalliController.myBookings);
 router.post('/bookings',goodaraivalliController.allBookings);
 router.post('/updateBooking',goodaraivalliController.updateStatus);
 router.post('/getBookingDetail',goodaraivalliController.getBookingDetail);
+router.post('/updatePaymentStatus',goodaraivalliController.updatePaymentStatus);
 module.exports=router;

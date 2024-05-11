@@ -9,4 +9,5 @@ router.post('/myBookings',poornaUbayamController.myBookings);
 router.post('/bookings',poornaUbayamController.bookings);
 router.post('/updateBooking',poornaUbayamController.updateStatus);
 router.post('/getBookingDetail',poornaUbayamController.getBookingDetail);
+router.post('/updatePaymentStatus',poornaUbayamController.updatePaymentStatus);
 module.exports=router;
