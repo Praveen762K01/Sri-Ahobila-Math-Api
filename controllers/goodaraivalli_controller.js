@@ -3,9 +3,7 @@ const model = require('../models');
 createDate = async (req, res) => {
     try {
         const data = {
-            from_date: req.body.from_date,
-            to_date: req.body.to_date,
-            month_name: req.body.month_name,
+            date: req.body.date,
             price: req.body.price,
             is_active: true
         }

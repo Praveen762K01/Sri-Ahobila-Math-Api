@@ -14,9 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Goodaraivalli_Master_Table.init({
-    from_date: DataTypes.STRING,
-    to_date: DataTypes.STRING,
-    month_name: DataTypes.STRING,
+    date: DataTypes.STRING,
     price: DataTypes.STRING,
     is_active: DataTypes.BOOLEAN
   }, {

@@ -9,13 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      from_date: {
-        type: Sequelize.STRING
-      },
-      to_date: {
-        type: Sequelize.STRING
-      },
-      month_name: {
+      date: {
         type: Sequelize.STRING
       },
       price: {
