@@ -8,6 +8,8 @@ const nithyaThadiyarathanaiRouter = require('./routes/nithya_thadiyarathanai_rou
 const poornaUbayamRouter = require('./routes/poorna_ubayam_routes');
 const swathiRouter = require('./routes/swathi_routes');
 const pradhoshamRouter = require('./routes/pradhosham_routes');
+const azvarRouter = require('./routes/azvar_routes');
+const azagiyasingarRouter = require('./routes/azagiyasingar_routes');
 const firstThirunakshatramRouter = require('./routes/first_thirunakshatram_routes');
 const fourtyFourThirunakshatramRouter = require('./routes/fourty_four_thirunakshatram_routes');
 const fourtyFiveThirunakshatramRouter = require('./routes/fourty_five_thirunakshatram_routes');
@@ -39,6 +41,8 @@ app.use("/api/nithyaThadiyarathanai", nithyaThadiyarathanaiRouter);
 app.use("/api/poornaUbayam", poornaUbayamRouter);
 app.use("/api/swathi", swathiRouter);
 app.use("/api/pradhosham", pradhoshamRouter);
+app.use("/api/azvar",azvarRouter);
+app.use("/api/azagiyasingar",azagiyasingarRouter);
 app.use("/api/first", firstThirunakshatramRouter);
 app.use("/api/fourtyfour", fourtyFourThirunakshatramRouter);
 app.use("/api/fourtyfive", fourtyFiveThirunakshatramRouter);
