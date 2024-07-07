@@ -109,6 +109,7 @@ newBooking = async (req, res) => {
             booking_count: req.body.booking_count,
             total_value: req.body.total_value,
             message: req.body.message,
+            payment_id:req.body.payment_id,
             is_approved: "Booked",
             is_paid:false,
             approved_by:""

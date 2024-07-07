@@ -39,6 +39,9 @@ module.exports = {
       message: {
         type: Sequelize.STRING
       },
+      payment_id: {
+        type: Sequelize.STRING
+      },
       is_approved: {
         type: Sequelize.STRING
       },
