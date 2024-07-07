@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const model = require('../models');
 
 // Admin Portal Api
@@ -7,11 +8,19 @@ createPrice = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
-        await model.NithyaThadiyarathanaiPrice.create(data).then((result) => {
+        console.log(data);
+        await model.NithyaThadiyarathanaiPrice.update({ is_active: false }, { where: {
+            is_active:true
+        }}).then(async(result) => {
+            await model.NithyaThadiyarathanaiPrice.create(data).then((result) => {
             return res.status(200).json({ message: "Price Created Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to create price.", error: err });
+        }); 
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to create price.", error: err });
         });
+       
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
@@ -19,8 +28,26 @@ createPrice = async (req, res) => {
 
 getPrice = async (req, res) => {
     try {
+        await model.NithyaThadiyarathanaiPrice.findOne({where:{
+            is_active:true
+        }}).then((result) => {
+            if(result!=null){
+                return res.status(200).json(result);
+            }else{
+                return res.status(500).json({message:"Not able to book now. Please try after some time"});
+            }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+getAllPrice = async (req, res) => {
+    try {
         await model.NithyaThadiyarathanaiPrice.findAll().then((result) => {
-            return res.status(200).json(result[0]);
+            return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });
@@ -136,6 +163,7 @@ module.exports = {
     bookings:bookings,
     newBooking: newBooking,
     myBookings:myBookings,
-    getBookingDetail:getBookingDetail
+    getBookingDetail:getBookingDetail,
+    getAllPrice:getAllPrice
 
 }

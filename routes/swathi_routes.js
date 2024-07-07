@@ -3,6 +3,7 @@ const router=express.Router();
 const swathiController=require('../controllers/swathi_controller');
 router.post('/createDate',swathiController.createDatePrice);
 router.post('/getDate',swathiController.getDatePrice);
+router.post('/getAllPrice',swathiController.getAllDatePrice);
 router.post('/deleteDate',swathiController.deleteDatePrice);
 router.post('/bookings',swathiController.allBookings);
 router.post('/newBooking',swathiController.newBooking);

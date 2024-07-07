@@ -3,6 +3,7 @@ const router=express.Router();
 const ponnadiController=require('../controllers/ponnadi_controller');
 router.post('/createDate',ponnadiController.createDate);
 router.post('/getDate',ponnadiController.getDate);
+router.post('/getAllPrice',ponnadiController.getAllDate);
 router.post('/deleteDate',ponnadiController.deleteDate);
 router.post('/newBooking',ponnadiController.newBooking);
 router.post('/myBookings',ponnadiController.myBookings);

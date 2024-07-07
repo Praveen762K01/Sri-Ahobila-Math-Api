@@ -31,6 +31,18 @@ getDate = async (req, res) => {
     }
 }
 
+getAllDate = async (req, res) => {
+    try {
+        await model.SannadhiDolai_Master_Table.findAll().then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
 deleteDate = async (req, res) => {
     try {
         const data = {
@@ -166,5 +178,6 @@ module.exports = {
     allBookings:allBookings,
     updateStatus:updateStatus,
     getBookingDetail:getBookingDetail,
-    updatePaymentStatus:updatePaymentStatus
+    updatePaymentStatus:updatePaymentStatus,
+    getAllDate:getAllDate
 }

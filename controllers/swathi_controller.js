@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const model = require('../models');
 
 // Admin Portal Api
@@ -19,6 +20,30 @@ createDatePrice = async (req, res) => {
 }
 
 getDatePrice = async (req, res) => {
+    const dateFormat = new Date();
+    const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
+    try {
+        await model.SwathiPrice.findAll({
+            where: {
+                date: {
+                    [Op.gte]: formattedCurrentDate
+                }
+            }
+        }).then((result) => {
+            if(result.length > 0){
+                return res.status(200).json(result) ;
+            }else{
+                return res.status(500).json({message:"Not able to book now. Please try after some time"});
+            }  
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+getAllDatePrice = async (req, res) => {
     try {
         await model.SwathiPrice.findAll().then((result) => {
             return res.status(200).json(result);
@@ -29,6 +54,7 @@ getDatePrice = async (req, res) => {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
 }
+
 
 deleteDatePrice = async (req, res) => {
     try {
@@ -53,7 +79,7 @@ deleteDatePrice = async (req, res) => {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
 }
-allBookings=async(req,res)=>{
+allBookings = async (req, res) => {
     try {
         await model.SwathiBookings.findAll().then((result) => {
             return res.status(200).json(result);
@@ -81,8 +107,8 @@ newBooking = async (req, res) => {
             total_value: req.body.total_value,
             message: req.body.message,
             is_approved: "Approved",
-            is_paid:true,
-            approved_by:""
+            is_paid: true,
+            approved_by: ""
         }
         await model.SwathiBookings.create(data).then((result) => {
             return res.status(200).json({ message: "Swathi Booked Successfully." });
@@ -113,7 +139,7 @@ getBookingDetail = async (req, res) => {
         const data = {
             id: req.body.id
         }
-        await model.SwathiBookings.findAll({ where: {id: data["id"] } }).then((result) => {
+        await model.SwathiBookings.findAll({ where: { id: data["id"] } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get data.", error: err });
@@ -132,5 +158,6 @@ module.exports = {
     allBookings: allBookings,
     newBooking: newBooking,
     myBookings: myBookings,
-    getBookingDetail:getBookingDetail
+    getBookingDetail: getBookingDetail,
+    getAllDatePrice: getAllDatePrice
 }

@@ -26,6 +26,7 @@ const sixtyThadiRouter = require('./routes/sixty_thadi_routes');
 const chatruNithyaThadiRouter = require('./routes/chatru_nithya_thadi_routes');
 const myBookingsRouter = require('./routes/my_bookings_routes');
 const projectRouter = require('./routes/project_routes');
+const locationRouter=require('./routes/location_routes');
 const app = express();
 
 // Middleware
@@ -59,6 +60,6 @@ app.use('/api/sixtyThadi', sixtyThadiRouter);
 app.use('/api/chatruNithyaThadi', chatruNithyaThadiRouter);
 app.use('/api/myBookings',myBookingsRouter);
 app.use('/api/project',projectRouter);
-
+app.use('/api/location',locationRouter);
 
 module.exports = app;

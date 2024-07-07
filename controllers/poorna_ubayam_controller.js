@@ -7,11 +7,18 @@ createPrice = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
-        await model.PoornaUbayamPrice.create(data).then((result) => {
+        await model.PoornaUbayamPrice.update({ is_active: false }, { where: {
+            is_active:true
+        }}).then(async(result) => {
+            await model.PoornaUbayamPrice.create(data).then((result) => {
             return res.status(200).json({ message: "Price Created Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to create price.", error: err });
+        }); 
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to create price.", error: err });
         });
+       
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
@@ -19,8 +26,26 @@ createPrice = async (req, res) => {
 
 getPrice = async (req, res) => {
     try {
+        await model.PoornaUbayamPrice.findOne({where:{
+            is_active:true
+        }}).then((result) => {
+            if(result){
+                return res.status(200).json(result);
+            }else{
+                return res.status(500).json({message:"Not able to book now. Please try after some time"});
+            }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+getAllPrice = async (req, res) => {
+    try {
         await model.PoornaUbayamPrice.findAll().then((result) => {
-            return res.status(200).json(result[0]);
+            return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });
@@ -166,6 +191,7 @@ getBookingDetail = async (req, res) => {
 module.exports = {
     createPrice: createPrice,
     getPrice: getPrice,
+    getAllPrice:getAllPrice,
     deletePrice: deletePrice,
     bookings:bookings,
     newBooking: newBooking,

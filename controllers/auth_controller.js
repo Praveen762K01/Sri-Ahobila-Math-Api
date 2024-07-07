@@ -41,7 +41,7 @@ sendOtp = async (req, res) => {
                     transporter.sendMail(mailOptions);
                     return res.status(200).json({ message: "Otp Sent Successfully", otp: otp, mail: data["email"],mobile:data["mobile"] });
                 }).catch((err) => {
-                    return res.status(500).json({ message: "Not able to store data or send email1", error: err });
+                    return res.status(500).json({ message: "Not able to store data or send email", error: err });
                 });
             } else if (result && result.is_registered == false) {
                 const otp = generateOTP();

@@ -3,6 +3,7 @@ const router=express.Router();
 const pradhoshamController=require('../controllers/pradhosham_controller');
 router.post('/createDate',pradhoshamController.createDatePrice);
 router.post('/getDate',pradhoshamController.getDatePrice);
+router.post('/getAllPrice',pradhoshamController.getAllDatePrice);
 router.post('/deleteDate',pradhoshamController.deleteDatePrice);
 router.post('/bookings',pradhoshamController.allBookings);
 router.post('/newBooking',pradhoshamController.newBooking);

@@ -3,6 +3,7 @@ const router=express.Router();
 const dolaiController=require('../controllers/home_dolai_controller');
 router.post('/createDate',dolaiController.createDate);
 router.post('/getDate',dolaiController.getDate);
+router.post('/getAllPrice',dolaiController.getAllDate);
 router.post('/deleteDate',dolaiController.deleteDate);
 router.post('/newBooking',dolaiController.newBooking);
 router.post('/myBookings',dolaiController.myBookings);
