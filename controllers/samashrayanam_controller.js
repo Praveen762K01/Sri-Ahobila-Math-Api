@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const model = require('../models');
 
 createDate = async (req, res) => {
@@ -20,6 +21,31 @@ createDate = async (req, res) => {
 }
 
 getDate = async (req, res) => {
+    const dateFormat = new Date();
+    const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
+    
+    try {
+        await model.SamashrayanamDates.findAll({
+            where: {
+                from_date: {
+                    [Op.gte]: formattedCurrentDate
+                }
+            }
+        }).then((result) => {
+            if (result.length > 0) {
+                return res.status(200).json(result);
+            } else {
+                return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+            }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+getAllPrice = async (req, res) => {
     try {
         await model.SamashrayanamDates.findAll().then((result) => {
             return res.status(200).json(result);
@@ -143,6 +169,7 @@ getBookingDetail = async (req, res) => {
 module.exports = {
     createDate: createDate,
     getDate: getDate,
+    getAllPrice:getAllPrice,
     deleteDate: deleteDate,
     newBooking: newBooking,
     myBookings: myBookings,

@@ -8,7 +8,6 @@ createPrice = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
-        console.log(data);
         await model.NithyaThadiyarathanaiPrice.update({ is_active: false }, { where: {
             is_active:true
         }}).then(async(result) => {
@@ -116,6 +115,7 @@ newBooking = async (req, res) => {
             is_paid:false,
             approved_by:""
         }
+       
         await model.NithyaThadiyarathanaiBookings.create(data).then((result) => {
             return res.status(200).json({ message: "Nithya Thadiyarathanai Booked Successfully." });
         }).catch((err) => {

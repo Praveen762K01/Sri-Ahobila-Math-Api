@@ -7,11 +7,18 @@ createDate = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
-        await model.Goodaraivalli_Master_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Date Created Successfully." });
+        await model.Goodaraivalli_Master_Table.update({ is_active: false }, { where: {
+            is_active:true
+        }}).then(async(result) => {
+            await model.Goodaraivalli_Master_Table.create(data).then((result) => {
+            return res.status(200).json({ message: "Price Created Successfully." });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to create price.", error: err });
+        }); 
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to create price.", error: err });
         });
+       
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
@@ -19,8 +26,20 @@ createDate = async (req, res) => {
 
 getDate = async (req, res) => {
     try {
+        await model.Goodaraivalli_Master_Table.findOne({ where: { is_active: true } }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+getAllPrice = async (req, res) => {
+    try {
         await model.Goodaraivalli_Master_Table.findAll().then((result) => {
-            return res.status(200).json(result[0]);
+            return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });
@@ -158,6 +177,7 @@ getBookingDetail = async (req, res) => {
 module.exports = {
     createDate: createDate,
     getDate: getDate,
+    getAllPrice:getAllPrice,
     deleteDate: deleteDate,
     newBooking: newBooking,
     myBookings: myBookings,

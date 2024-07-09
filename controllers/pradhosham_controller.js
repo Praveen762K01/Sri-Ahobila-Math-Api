@@ -31,11 +31,11 @@ getDatePrice = async (req, res) => {
                 }
             }
         }).then((result) => {
-            if(result.length > 0){
-                return res.status(200).json(result) ;
-            }else{
-                return res.status(500).json({message:"Not able to book now. Please try after some time"});
-            }  
+            if (result.length > 0) {
+                return res.status(200).json(result);
+            } else {
+                return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+            }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });
@@ -80,7 +80,7 @@ deleteDatePrice = async (req, res) => {
     }
 }
 
-allBookings=async(req,res)=>{
+allBookings = async (req, res) => {
     try {
         await model.PradhoshamBookings.findAll().then((result) => {
             return res.status(200).json(result);
@@ -89,7 +89,7 @@ allBookings=async(req,res)=>{
         });
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
-    } 
+    }
 }
 // Admin Portal Api
 
@@ -107,10 +107,10 @@ newBooking = async (req, res) => {
             booking_count: req.body.booking_count,
             total_value: req.body.total_value,
             message: req.body.message,
-            payment_id:req.body.payment_id,
+            payment_id: req.body.payment_id,
             is_approved: "Booked",
-            is_paid:false,
-            approved_by:""
+            is_paid: false,
+            approved_by: ""
         }
         await model.PradhoshamBookings.create(data).then((result) => {
             return res.status(200).json({ message: "Swathi Booked Successfully." });
@@ -141,7 +141,7 @@ getBookingDetail = async (req, res) => {
         const data = {
             id: req.body.id
         }
-        await model.PradhoshamBookings.findAll({ where: {id: data["id"] } }).then((result) => {
+        await model.PradhoshamBookings.findAll({ where: { id: data["id"] } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get data.", error: err });
@@ -160,6 +160,6 @@ module.exports = {
     allBookings: allBookings,
     newBooking: newBooking,
     myBookings: myBookings,
-    getBookingDetail:getBookingDetail,
-    getAllDatePrice:getAllDatePrice
+    getBookingDetail: getBookingDetail,
+    getAllDatePrice: getAllDatePrice
 }

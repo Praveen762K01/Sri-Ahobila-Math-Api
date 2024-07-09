@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const model = require('../models');
 
 createDate = async (req, res) => {
@@ -9,20 +10,38 @@ createDate = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
-        await model.SixtyThadi_Master_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Date Created Successfully." });
+        await model.SixtyThadi_Master_Table.update({ is_active: false }, { where: {
+            is_active:true
+        }}).then(async(result) => {
+            await model.SixtyThadi_Master_Table.create(data).then((result) => {
+            return res.status(200).json({ message: "Price Created Successfully." });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to create price.", error: err });
+        }); 
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to create price.", error: err });
         });
+       
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
 }
 
-getDate = async (req, res) => {
+getDate= async (req, res) => {
+    const dateFormat = new Date();
+    const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
+
     try {
-        await model.SixtyThadi_Master_Table.findAll().then((result) => {
-            return res.status(200).json(result[0]);
+        await model.SixtyThadi_Master_Table.findOne({where:{
+            is_active:true, from_date: {
+                [Op.gte]: formattedCurrentDate
+            }
+        }}).then((result) => {
+            if (result!=null) {
+                return res.status(200).json(result);
+            } else {
+                return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+            }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });
@@ -31,7 +50,7 @@ getDate = async (req, res) => {
     }
 }
 
-getAllDate = async (req, res) => {
+getAllDate= async (req, res) => {
     try {
         await model.SixtyThadi_Master_Table.findAll().then((result) => {
             return res.status(200).json(result);
@@ -97,7 +116,7 @@ newBooking = async (req, res) => {
             approved_by:""
         }
         await model.SixtyThadi_Transaction_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Ponnadi Booked Successfully." });
+            return res.status(200).json({ message: "Thadiyarathanai Booked Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to book.", error: err });
         });
