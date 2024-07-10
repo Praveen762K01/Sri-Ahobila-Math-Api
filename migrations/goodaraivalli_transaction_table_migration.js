@@ -42,6 +42,12 @@ module.exports = {
       is_approved: {
         type: Sequelize.STRING
       },
+      price_id:{
+        type: Sequelize.STRING
+      },
+      payment_id:{
+        type: Sequelize.STRING
+      },
       is_paid: {
         type: Sequelize.BOOLEAN
       },

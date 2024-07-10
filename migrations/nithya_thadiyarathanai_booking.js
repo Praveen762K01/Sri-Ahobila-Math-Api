@@ -39,6 +39,9 @@ module.exports = {
       total_value: {
         type: Sequelize.STRING
       },
+      price_id:{
+        type: Sequelize.STRING
+      },
       payment_id:{
         type: Sequelize.STRING
       },
