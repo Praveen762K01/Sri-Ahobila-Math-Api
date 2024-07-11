@@ -51,6 +51,12 @@ module.exports = {
       is_active: {
         type: Sequelize.BOOLEAN
       },
+      thirunakshatram_price:{
+        type:Sequelize.STRING
+      },
+      kainkaryam_price:{
+        type:Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

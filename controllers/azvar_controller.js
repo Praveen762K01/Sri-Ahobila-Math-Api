@@ -11,7 +11,9 @@ createAzvar = async (req, res) => {
             kainkaryam: req.body.kainkaryam,
             dod_tamil_month: req.body.dod_tamil_month,
             dod_english_date: req.body.dod_english_date,
-            is_active: req.body.is_active
+            is_active: req.body.is_active,
+            thirunakshatram_price: req.body.thirunakshatram_price,
+            kainkaryam_price: req.body.kainkaryam_price
         }
         await model.AzvarMaster.create(data).then((result) => {
             return res.status(200).json({ message: "Azvar Created Successfully." });
@@ -47,12 +49,12 @@ deleteAzvar = async (req, res) => {
     }
 }
 
-azvarList=async(req,res)=>{
+azvarList = async (req, res) => {
     try {
         await model.AzvarMaster.findAll().then((result) => {
-            if(result.length==0){
-                return res.status(500).json({ message: "No data found."});
-            }else{return res.status(200).json(result);}
+            if (result.length == 0) {
+                return res.status(500).json({ message: "No data found." });
+            } else { return res.status(200).json(result); }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get data.", error: err });
         });
@@ -76,7 +78,7 @@ updateAzvar = async (req, res) => {
         }
         await model.AzvarMaster.update(data, {
             where: {
-                id:data["id"]
+                id: data["id"]
             }
         }).then((result) => {
             return res.status(200).json({ message: "Azvar Updated Successfully." });
@@ -88,9 +90,9 @@ updateAzvar = async (req, res) => {
     }
 }
 
-module.exports = { 
+module.exports = {
     createAzvar: createAzvar,
-    deleteAzvar:deleteAzvar,
-    azvarList:azvarList,
-    updateAzvar:updateAzvar
+    deleteAzvar: deleteAzvar,
+    azvarList: azvarList,
+    updateAzvar: updateAzvar
 }

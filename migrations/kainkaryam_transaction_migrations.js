@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('FirstThirunakshatramBookings', {
+    await queryInterface.createTable('KainkaryamTransactions', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,19 +24,22 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      date: {
-        type: Sequelize.STRING
-      },
       price: {
         type: Sequelize.STRING
       },
-      booking_count: {
+      name: {
         type: Sequelize.STRING
       },
-      total_value: {
+      payment_id: {
         type: Sequelize.STRING
       },
       message: {
+        type: Sequelize.STRING
+      },
+      kainkaryam_id: {
+        type: Sequelize.STRING
+      },
+      kainkaryam_type: {
         type: Sequelize.STRING
       },
       is_approved: {
@@ -56,10 +59,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-      
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('FirstThirunakshatramBookings');
+    await queryInterface.dropTable('KainkaryamTransactions');
   }
 };

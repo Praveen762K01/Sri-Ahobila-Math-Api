@@ -27,6 +27,8 @@ const chatruNithyaThadiRouter = require('./routes/chatru_nithya_thadi_routes');
 const myBookingsRouter = require('./routes/my_bookings_routes');
 const projectRouter = require('./routes/project_routes');
 const locationRouter=require('./routes/location_routes');
+const baseDataRouter=require('./routes/base_data_master_routes');
+const thirunakshatramKainkaryamRouter=require('./routes/thirunakshatram_kainkaryam_routes');
 const app = express();
 
 // Middleware
@@ -61,5 +63,7 @@ app.use('/api/chatruNithyaThadi', chatruNithyaThadiRouter);
 app.use('/api/myBookings',myBookingsRouter);
 app.use('/api/project',projectRouter);
 app.use('/api/location',locationRouter);
+app.use('/api/base_data',baseDataRouter);
+app.use('/api/thirunakshatram_kainkaryam',thirunakshatramKainkaryamRouter);
 
 module.exports = app;

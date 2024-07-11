@@ -1,0 +1,14 @@
+const express=require('express');
+const router=express.Router();
+const baseDataController=require('../controllers/base_data_master_controller');
+router.post('/updateTamilMonth',baseDataController.updateTamilMonth);
+router.post('/updateTamilStar',baseDataController.updateTamilStar);
+router.post('/updatePaksham',baseDataController.updatePaksham);
+router.post('/updateAyanam',baseDataController.updateAyanam);
+router.post('/updateThidhi',baseDataController.updateThidhi);
+router.post('/tamilMonth',baseDataController.getAllTamilMonth);
+router.post('/tamilStar',baseDataController.getAllTamilStar);
+router.post('/paksham',baseDataController.getAllPaksham);
+router.post('/ayanam',baseDataController.getAllAyanam);
+router.post('/thidhi',baseDataController.getAllThidhi);
+module.exports=router;

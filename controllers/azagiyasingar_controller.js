@@ -16,7 +16,9 @@ createAzagiyasingar = async (req, res) => {
             dod_paksham: req.body.dod_paksham,
             dod_thidhi: req.body.dod_thidhi,
             brindavan_location: req.body.brindavan_location,
-            is_active: req.body.is_active
+            is_active: req.body.is_active,
+            thirunakshatram_price: req.body.thirunakshatram_price,
+            kainkaryam_price: req.body.kainkaryam_price
         }
         await model.AzagiyasingarMaster.create(data).then((result) => {
             return res.status(200).json({ message: "Azagiyasingar Created Successfully." });
