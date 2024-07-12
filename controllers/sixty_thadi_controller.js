@@ -3,29 +3,55 @@ const model = require('../models');
 
 createDate = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const requestDataFromDate = new Date(req.body.from_date);
+        const requestDataToDate = new Date(req.body.to_date);
+
+        // Validate if from_date is today or in the future
+        if (requestDataFromDate < currentDate) {
+            return res.status(500).json({ message: "From date must be today or in the future." });
+        }
+
+        // Validate if to_date is greater than from_date
+        if (requestDataToDate <= requestDataFromDate) {
+            return res.status(500).json({ message: "To date must be greater than from date." });
+        }
+
+        // Calculate difference in days
+        const differenceInDays = Math.round((requestDataToDate - requestDataFromDate) / (1000 * 60 * 60 * 24));
+
+        // Validate if difference is at least 60 days
+        if (differenceInDays < 60) {
+            return res.status(500).json({ message: "Difference between from date and to date must be at least 60 days." });
+        }
+
         const data = {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
             month_name: req.body.month_name,
             price: req.body.price,
             is_active: true
-        }
-        await model.SixtyThadi_Master_Table.update({ is_active: false }, { where: {
-            is_active:true
-        }}).then(async(result) => {
-            await model.SixtyThadi_Master_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Price Created Successfully." });
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        }); 
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        });
-       
+        };
+
+        // Update existing active record to is_active: false
+        await model.SixtyThadi_Master_Table.update(
+            { is_active: false },
+            { where: { is_active: true } }
+        );
+
+        // Create new record with the provided data
+        await model.SixtyThadi_Master_Table.create(data)
+            .then((result) => {
+                return res.status(200).json({ message: "Price Created Successfully." });
+            })
+            .catch((err) => {
+                return res.status(500).json({ message: "Not able to create price.", error: err });
+            });
+
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
-}
+};
 
 getDate= async (req, res) => {
     const dateFormat = new Date();
@@ -52,7 +78,9 @@ getDate= async (req, res) => {
 
 getAllDate= async (req, res) => {
     try {
-        await model.SixtyThadi_Master_Table.findAll().then((result) => {
+        await model.SixtyThadi_Master_Table.findAll({order: [
+            ['from_date', 'ASC']
+        ]}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

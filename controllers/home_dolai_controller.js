@@ -2,7 +2,21 @@ const { Op } = require('sequelize');
 const model = require('../models');
 
 createDate = async (req, res) => {
-    try {
+    try { 
+        const currentDate = new Date();
+        const requestDataFromDate = new Date(req.body.from_date);
+        const requestDataToDate = new Date(req.body.to_date);
+
+        // Validate if from_date is today or in the future
+        if (requestDataFromDate < currentDate) {
+            return res.status(500).json({ message: "From date must be today or in the future." });
+        }
+
+        // Validate if to_date is greater than from_date
+        if (requestDataToDate <= requestDataFromDate) {
+            return res.status(500).json({ message: "To date must be greater than from date." });
+        }
+
         const data = {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
@@ -30,7 +44,9 @@ getDate = async (req, res) => {
                 from_date: {
                     [Op.gte]: formattedCurrentDate
                 }
-            }
+            },order: [
+                ['from_date', 'ASC']
+            ]
         }).then((result) => {
             if (result.length > 0) {
                 return res.status(200).json(result);
@@ -47,7 +63,9 @@ getDate = async (req, res) => {
 
 getAllDate = async (req, res) => {
     try {
-        await model.HomeDolai_Master_Table.findAll().then((result) => {
+        await model.HomeDolai_Master_Table.findAll({order: [
+            ['from_date', 'ASC']
+        ]}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

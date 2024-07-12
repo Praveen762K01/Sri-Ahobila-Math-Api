@@ -1,44 +1,70 @@
+const { Op } = require('sequelize');
 const model = require('../models');
 
-createDate = async (req, res) => {
+createDatePrice = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const requestDataDate = new Date(req.body.date);
+
+        if (requestDataDate < currentDate) {
+            return res.status(500).json({ message: "Date must be today or in the future." });
+        }
+
         const data = {
             date: req.body.date,
             price: req.body.price,
             is_active: true
-        }
-        await model.Goodaraivalli_Master_Table.update({ is_active: false }, { where: {
-            is_active:true
-        }}).then(async(result) => {
-            await model.Goodaraivalli_Master_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Price Created Successfully." });
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        }); 
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        });
-       
-    } catch (error) {
-        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
-    }
-}
+        };
 
-getDate = async (req, res) => {
-    try {
-        await model.Goodaraivalli_Master_Table.findOne({ where: { is_active: true } }).then((result) => {
-            return res.status(200).json(result);
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to get price.", error: err });
-        });
+        const existingPrice = await model.Goodaraivalli_Master_Table.findOne({ where: { date: data.date } });
+
+        if (existingPrice) {
+            return res.status(500).json({ message: "Price with this date already exists." });
+        }
+
+        await model.Goodaraivalli_Master_Table.create(data)
+            .then((result) => {
+                return res.status(200).json({ message: "Price Created Successfully." });
+            })
+            .catch((err) => {
+                return res.status(500).json({ message: "Not able to create price.", error: err });
+            });
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
-}
+};
+
+getDatePrice = async (req, res) => {
+    const dateFormat = new Date();
+    const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
+    try {
+        const prices = await model.Goodaraivalli_Master_Table.findAll({
+            where: {
+                date: {
+                    [Op.gte]: formattedCurrentDate
+                }
+            },
+            order: [
+                ['date', 'ASC']
+            ]
+        });
+
+        if (prices.length > 0) {
+            return res.status(200).json(prices);
+        } else {
+            return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+};
+
 
 getAllPrice = async (req, res) => {
     try {
-        await model.Goodaraivalli_Master_Table.findAll().then((result) => {
+        await model.Goodaraivalli_Master_Table.findAll({order: [
+            ['date', 'ASC']
+        ]}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
@@ -177,8 +203,8 @@ getBookingDetail = async (req, res) => {
 }
 
 module.exports = {
-    createDate: createDate,
-    getDate: getDate,
+    createDatePrice: createDatePrice,
+    getDatePrice: getDatePrice,
     getAllPrice:getAllPrice,
     deleteDate: deleteDate,
     newBooking: newBooking,

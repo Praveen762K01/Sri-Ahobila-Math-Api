@@ -3,6 +3,20 @@ const model = require('../models');
 
 createDate = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const requestDataFromDate = new Date(req.body.from_date);
+        const requestDataToDate = new Date(req.body.to_date);
+
+        // Validate if from_date is today or in the future
+        if (requestDataFromDate < currentDate) {
+            return res.status(500).json({ message: "From date must be today or in the future." });
+        }
+
+        // Validate if to_date is greater than from_date
+        if (requestDataToDate <= requestDataFromDate) {
+            return res.status(500).json({ message: "To date must be greater than from date." });
+        }
+
         const data = {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
@@ -34,7 +48,9 @@ getDate = async (req, res) => {
             is_active:true, from_date: {
                 [Op.gte]: formattedCurrentDate
             }
-        }}).then((result) => {
+        }, order: [
+                ['from_date', 'ASC']
+            ]}).then((result) => {
             if (result!=null) {
                 return res.status(200).json(result);
             } else {
@@ -50,7 +66,9 @@ getDate = async (req, res) => {
 
 getAllDate = async (req, res) => {
     try {
-        await model.Chatru_NithyaThadi_Master_Table.findAll().then((result) => {
+        await model.Chatru_NithyaThadi_Master_Table.findAll({order: [
+            ['from_date', 'ASC']
+        ]}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

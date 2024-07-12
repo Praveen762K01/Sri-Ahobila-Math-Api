@@ -4,49 +4,68 @@ const model = require('../models');
 // Admin Portal Api
 createDatePrice = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const requestDataDate = new Date(req.body.date);
+
+        if (requestDataDate < currentDate) {
+            return res.status(500).json({ message: "Date must be today or in the future." });
+        }
+
         const data = {
             date: req.body.date,
             price: req.body.price,
             is_active: true
+        };
+
+        const existingPrice = await model.PradhoshamPrice.findOne({ where: { date: data.date } });
+
+        if (existingPrice) {
+            return res.status(500).json({ message: "Price with this date already exists." });
         }
-        await model.PradhoshamPrice.create(data).then((result) => {
-            return res.status(200).json({ message: "Price Created Successfully." });
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        });
+
+        await model.PradhoshamPrice.create(data)
+            .then((result) => {
+                return res.status(200).json({ message: "Price Created Successfully." });
+            })
+            .catch((err) => {
+                return res.status(500).json({ message: "Not able to create price.", error: err });
+            });
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
-}
+};
 
 getDatePrice = async (req, res) => {
     const dateFormat = new Date();
     const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
-
     try {
-        await model.PradhoshamPrice.findAll({
+        const prices = await model.PradhoshamPrice.findAll({
             where: {
                 date: {
                     [Op.gte]: formattedCurrentDate
                 }
-            }
-        }).then((result) => {
-            if (result.length > 0) {
-                return res.status(200).json(result);
-            } else {
-                return res.status(500).json({ message: "Not able to book now. Please try after some time" });
-            }
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to get price.", error: err });
+            },
+            order: [
+                ['date', 'ASC']
+            ]
         });
+
+        if (prices.length > 0) {
+            return res.status(200).json(prices);
+        } else {
+            return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+        }
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
-}
+};
+
 
 getAllDatePrice = async (req, res) => {
     try {
-        await model.PradhoshamPrice.findAll().then((result) => {
+        await model.PradhoshamPrice.findAll({order: [
+            ['date', 'ASC']
+        ]}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

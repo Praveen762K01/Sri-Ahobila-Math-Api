@@ -3,6 +3,20 @@ const model = require('../models');
 
 createDate = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const requestDataFromDate = new Date(req.body.from_date);
+        const requestDataToDate = new Date(req.body.to_date);
+
+        // Validate if from_date is today or in the future
+        if (requestDataFromDate < currentDate) {
+            return res.status(500).json({ message: "From date must be today or in the future." });
+        }
+
+        // Validate if to_date is greater than from_date
+        if (requestDataToDate <= requestDataFromDate) {
+            return res.status(500).json({ message: "To date must be greater than from date." });
+        }
+
         const data = {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
@@ -10,14 +24,8 @@ createDate = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
-        await model.Ponnadi_Master_Table.update({ is_active: false }, { where: {
-            is_active:true
-        }}).then(async(result) => {
-            await model.Ponnadi_Master_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Ponnadi Date Created Successfully." });
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        }); 
+        await model.Ponnadi_Master_Table.create(data).then((result) => {
+            return res.status(200).json({ message: "Date Created Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to create price.", error: err });
         });
@@ -29,13 +37,18 @@ createDate = async (req, res) => {
 getDate = async (req, res) => {
     const dateFormat = new Date();
     const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
+    
     try {
-        await model.Ponnadi_Master_Table.findOne({where:{
-            is_active:true, from_date: {
-                [Op.gte]: formattedCurrentDate
-            }
-        }}).then((result) => {
-            if (result!=null) {
+        await model.Ponnadi_Master_Table.findAll({
+            where: {
+                from_date: {
+                    [Op.gte]: formattedCurrentDate
+                }
+            },order: [
+                ['from_date', 'ASC']
+            ]
+        }).then((result) => {
+            if (result.length > 0) {
                 return res.status(200).json(result);
             } else {
                 return res.status(500).json({ message: "Not able to book now. Please try after some time" });
@@ -50,7 +63,9 @@ getDate = async (req, res) => {
 
 getAllDate = async (req, res) => {
     try {
-        await model.Ponnadi_Master_Table.findAll().then((result) => {
+        await model.Ponnadi_Master_Table.findAll({order: [
+            ['from_date', 'ASC']
+        ]}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
