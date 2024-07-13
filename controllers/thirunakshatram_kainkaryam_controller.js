@@ -20,7 +20,11 @@ getThirunakshatramDate = async (req, res) => {
         // Flatten the array of arrays into a single array
         const allThirunakshatramDates = thirunakshatramResults.flat();
 
-        return res.status(200).json(allThirunakshatramDates);
+        if (allThirunakshatramDates.length > 0) {
+            return res.status(200).json(allThirunakshatramDates);
+        } else {
+            return res.status(500).json({ message: "No price found for Thirunakshatram. So not able to book now." });
+        }
 
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
@@ -46,8 +50,11 @@ getKainkaryamDate = async (req, res) => {
 
         // Flatten the array of arrays into a single array
         const allKainkaryamDates = kainkaryamResults.flat();
-
-        return res.status(200).json(allKainkaryamDates);
+        if (allKainkaryamDates.length > 0) {
+            return res.status(200).json(allKainkaryamDates);
+        } else {
+            return res.status(500).json({ message: "No price found for Kainkaryam. So not able to book now." });
+        }
 
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
@@ -112,9 +119,45 @@ newKainkaryamBooking = async (req, res) => {
     }
 }
 
+getAllThirunakshatramBookings= async (req, res) => {
+    try {
+        await model.ThirunakshatramTransactions.findAll().then((result) => {
+            if(result.length>0){
+                return res.status(200).json(result);
+            }else{
+                return res.status(500).json({ message: "Not data found.", error: err });
+            }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+getAllKainkaryamBookings= async (req, res) => {
+    try {
+        await model.KainkaryamTransactions.findAll().then((result) => {
+            if(result.length>0){
+                return res.status(200).json(result);
+            }else{
+                return res.status(500).json({ message: "Not data found.", error: err });
+            }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to get price.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
+
+
+
 module.exports = {
     getThirunakshatramDate: getThirunakshatramDate,
     getKainkaryamDate: getKainkaryamDate,
-    newThirunakshatramBooking:newThirunakshatramBooking,
-    newKainkaryamBooking:newKainkaryamBooking
+    newThirunakshatramBooking: newThirunakshatramBooking,
+    newKainkaryamBooking: newKainkaryamBooking,
+    getAllThirunakshatramBookings:getAllThirunakshatramBookings,
+    getAllKainkaryamBookings:getAllKainkaryamBookings
 }

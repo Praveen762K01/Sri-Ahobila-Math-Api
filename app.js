@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
+const imageRouter=require('./routes/image_routes');
 const authRouter = require("./routes/auth_routes");
 const statusRouter = require("./routes/booking_status_routes");
 const dateRouter = require("./routes/date_routes");
@@ -28,15 +30,18 @@ const myBookingsRouter = require('./routes/my_bookings_routes');
 const projectRouter = require('./routes/project_routes');
 const locationRouter=require('./routes/location_routes');
 const baseDataRouter=require('./routes/base_data_master_routes');
-const thirunakshatramKainkaryamRouter=require('./routes/thirunakshatram_kainkaryam_routes');
+const thirunakshatramRouter=require('./routes/thirunakshatram_routes');
+const kainkaryamRouter=require('./routes/kainkaryam_routes');
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads',express.static('uploads'));
 
 // Routes
+app.use("/api/image",imageRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/status",statusRouter)
 app.use("/api/date", dateRouter);
@@ -64,6 +69,8 @@ app.use('/api/myBookings',myBookingsRouter);
 app.use('/api/project',projectRouter);
 app.use('/api/location',locationRouter);
 app.use('/api/base_data',baseDataRouter);
-app.use('/api/thirunakshatram_kainkaryam',thirunakshatramKainkaryamRouter);
+app.use('/api/thirunakshatram',thirunakshatramRouter);
+app.use('/api/kainkaryam',kainkaryamRouter);
 
 module.exports = app;
+
