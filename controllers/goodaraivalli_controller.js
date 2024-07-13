@@ -21,14 +21,17 @@ createDatePrice = async (req, res) => {
         if (existingPrice) {
             return res.status(500).json({ message: "Price with this date already exists." });
         }
-
-        await model.Goodaraivalli_Master_Table.create(data)
-            .then((result) => {
-                return res.status(200).json({ message: "Price Created Successfully." });
-            })
-            .catch((err) => {
-                return res.status(500).json({ message: "Not able to create price.", error: err });
-            });
+        await model.Goodaraivalli_Master_Table.update({ is_active: false }, { where: {
+            is_active:true
+        }}).then(async(result) => {
+            await model.Goodaraivalli_Master_Table.create(data).then((result) => {
+            return res.status(200).json({ message: "Price Created Successfully." });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to create price.", error: err });
+        }); 
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to create price.", error: err });
+        });
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
@@ -38,21 +41,19 @@ getDatePrice = async (req, res) => {
     const dateFormat = new Date();
     const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
     try {
-        const prices = await model.Goodaraivalli_Master_Table.findAll({
+        const prices = await model.Goodaraivalli_Master_Table.findOne({
             where: {
+                is_active: true,
                 date: {
                     [Op.gte]: formattedCurrentDate
                 }
-            },
-            order: [
-                ['date', 'ASC']
-            ]
+            }
         });
 
-        if (prices.length > 0) {
+        if (prices!=null) {
             return res.status(200).json(prices);
         } else {
-            return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+            return res.status(500).json({ message: "No price found for Goodaraivalli. So not able to book now." });
         }
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });

@@ -52,7 +52,7 @@ getDate = async (req, res) => {
             if (result!=null) {
                 return res.status(200).json(result);
             } else {
-                return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+                return res.status(500).json({ message: "No price found for Dolai. So not able to book now." });
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
@@ -122,7 +122,7 @@ newBooking = async (req, res) => {
             address: req.body.address,
             date: req.body.date,
             price: req.body.price,
-            booking_count: null,
+            booking_count: "",
             total_value: req.body.total_value,
             message: req.body.message,
             price_id:req.body.price_id,
@@ -132,7 +132,7 @@ newBooking = async (req, res) => {
             approved_by:""
         }
         await model.SannadhiDolai_Transaction_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Ponnadi Booked Successfully." });
+            return res.status(200).json({ message: "Sannadhi Dolai Booked Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to book.", error: err });
         });

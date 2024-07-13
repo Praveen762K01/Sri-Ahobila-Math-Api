@@ -51,7 +51,7 @@ getDate = async (req, res) => {
             if (result.length > 0) {
                 return res.status(200).json(result);
             } else {
-                return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+                return res.status(500).json({ message: "No price found for Samashrayanam. So not able to book now." });
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
@@ -120,9 +120,9 @@ newBooking = async (req, res) => {
             mobile_number: req.body.mobile_number,
             address: req.body.address,
             date: req.body.date,
-            price: null,
+            price: req.body.price,
             booking_count: req.body.booking_count,
-            total_value: null,
+            total_value: req.body.total_value,
             message: req.body.message,
             price_id:req.body.price_id,
             payment_id:req.body.payment_id,

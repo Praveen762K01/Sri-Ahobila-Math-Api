@@ -53,7 +53,7 @@ getDatePrice = async (req, res) => {
         if (prices.length > 0) {
             return res.status(200).json(prices);
         } else {
-            return res.status(500).json({ message: "Not able to book now. Please try after some time" });
+            return res.status(500).json({ message: "No price found for Pradhosham. So not able to book now." });
         }
     } catch (error) {
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
@@ -133,7 +133,7 @@ newBooking = async (req, res) => {
             approved_by:""
         }
         await model.PradhoshamBookings.create(data).then((result) => {
-            return res.status(200).json({ message: "Swathi Booked Successfully." });
+            return res.status(200).json({ message: "Pradhosham Booked Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to book.", error: err });
         });

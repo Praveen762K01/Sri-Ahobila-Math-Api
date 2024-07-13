@@ -33,7 +33,7 @@ getPrice = async (req, res) => {
             if(result!=null){
                 return res.status(200).json(result);
             }else{
-                return res.status(500).json({message:"Not able to book now. Please try after some time"});
+                return res.status(500).json({message:"No price found for Nithya Thadiyarathanai. So not able to book now."});
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

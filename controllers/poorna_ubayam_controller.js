@@ -32,7 +32,7 @@ getPrice = async (req, res) => {
             if(result){
                 return res.status(200).json(result);
             }else{
-                return res.status(500).json({message:"Not able to book now. Please try after some time"});
+                return res.status(500).json({message:"No price found for Poorna Ubayam. So not able to book now."});
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
@@ -116,7 +116,7 @@ newBooking = async (req, res) => {
             approved_by:""
         }
         await model.PoornaUbayamBookings.create(data).then((result) => {
-            return res.status(200).json({ message: "Nithya Thadiyarathanai Booked Successfully." });
+            return res.status(200).json({ message: "Poorna Ubayam Booked Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to book.", error: err });
         });
