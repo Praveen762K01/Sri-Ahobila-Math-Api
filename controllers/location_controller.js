@@ -152,9 +152,56 @@ const updateCities = async (req, res) => {
     }
 };
 
+const getAllCountries = async (req, res) => {
+    try {
+        await model.CountryMaster.findAll().then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not Able to Get Countries" });
+        });
+
+      
+    } catch (error) {
+        return res.status(500).json({ message: "Not Able to Get Countries" });
+    }
+};
+
+const getAllStates = async (req, res) => {
+    try {
+        const data = {
+            country_id:req.body.country_id
+        };
+       await model.StateMaster.findAll({where:{country_id:data["country_id"]}}).then((result) => {
+        return res.status(200).json(result);
+       }).catch((err) => {
+        return res.status(500).json({ message: "Not Able to Get States" });
+       });
+    } catch (error) {
+        return res.status(500).json({ message: "Not Able to Get States" });
+    }
+}
+
+const getAllCities = async (req, res) => {
+    try {
+        const data = {
+            state_id:req.body.state_id
+        };
+       await model.CityMaster.findAll({where:{state_id:data["state_id"]}}).then((result) => {
+        return res.status(200).json(result);
+       }).catch((err) => {
+        return res.status(500).json({ message: "Not Able to Get Cities" });
+       });
+    } catch (error) {
+        return res.status(500).json({ message: "Not Able to Get Cities" });
+    }
+}
+
 
 module.exports = {
     updateCountries: updateCountries,
     updateStates:updateStates,
-    updateCities:updateCities
+    updateCities:updateCities,
+    getAllCountries:getAllCountries,
+    getAllStates:getAllStates,
+    getAllCities:getAllCities
 };

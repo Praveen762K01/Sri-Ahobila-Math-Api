@@ -125,7 +125,7 @@ getAllThirunakshatramBookings= async (req, res) => {
             if(result.length>0){
                 return res.status(200).json(result);
             }else{
-                return res.status(500).json({ message: "Not data found.", error: err });
+                return res.status(200).json({ message: "Not data found.", error: err });
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
@@ -141,7 +141,7 @@ getAllKainkaryamBookings= async (req, res) => {
             if(result.length>0){
                 return res.status(200).json(result);
             }else{
-                return res.status(500).json({ message: "Not data found.", error: err });
+                return res.status(200).json({ message: "Not data found.", error: err });
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

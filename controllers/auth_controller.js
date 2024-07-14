@@ -20,11 +20,31 @@ sendOtp = async (req, res) => {
     try {
         const data = {
             mobile: req.body.mobile,
-            email: req.body.email
+            email_address: req.body.email_address
         }
         await model.UserData.findOne({ where: { mobile_number: data["mobile"] } }).then((result) => {
             if (result && result.is_registered == true) {
                 // return res.status(201).json({ message: "User already found", details: result });
+                // const otp = generateOTP();
+                // user_mobile = data["mobile"];
+                // model.UserData.update({ otp: otp }, {
+                //     where: {
+                //         mobile_number: data["mobile"]
+                //     }
+                // }).then((result) => {
+                //     const mailOptions = {
+                //         from: 'vrukshamnotifications@gmail.com',
+                //         to: data["email_address"],
+                //         subject: 'Your OTP for verification',
+                //         text: `Your OTP is: ${otp}`
+                //     };
+                //     transporter.sendMail(mailOptions);
+                    return res.status(500).json({ message: "User already registered. Please Login", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
+                // }).catch((err) => {
+                //     return res.status(500).json({ message: "Not able to store data or send email", error: err });
+                // });
+            } else
+             if (result && result.is_registered == false) {
                 const otp = generateOTP();
                 user_mobile = data["mobile"];
                 model.UserData.update({ otp: otp }, {
@@ -34,51 +54,32 @@ sendOtp = async (req, res) => {
                 }).then((result) => {
                     const mailOptions = {
                         from: 'vrukshamnotifications@gmail.com',
-                        to: data["email"],
+                        to: data["email_address"],
                         subject: 'Your OTP for verification',
                         text: `Your OTP is: ${otp}`
                     };
                     transporter.sendMail(mailOptions);
-                    return res.status(200).json({ message: "Otp Sent Successfully", otp: otp, mail: data["email"],mobile:data["mobile"] });
+                    return res.status(200).json({ message: "Otp Sent Successfully", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
                 }).catch((err) => {
                     return res.status(500).json({ message: "Not able to store data or send email", error: err });
-                });
-            } else if (result && result.is_registered == false) {
-                const otp = generateOTP();
-                user_mobile = data["mobile"];
-                model.UserData.update({ otp: otp }, {
-                    where: {
-                        mobile_number: data["mobile"]
-                    }
-                }).then((result) => {
-                    const mailOptions = {
-                        from: 'vrukshamnotifications@gmail.com',
-                        to: data["email"],
-                        subject: 'Your OTP for verification',
-                        text: `Your OTP is: ${otp}`
-                    };
-                    transporter.sendMail(mailOptions);
-                    return res.status(200).json({ message: "Otp Sent Successfully", otp: otp, mail: data["email"],mobile:data["mobile"] });
-                }).catch((err) => {
-                    return res.status(500).json({ message: "Not able to store data or send email1", error: err });
                 });
             } else {
                 const otp = generateOTP();
                 user_mobile = data["mobile"];
                 model.UserData.create({
                     mobile_number: data["mobile"],
-                    mail_id: data["email"],
+                    email_address: data["email_address"],
                     otp: otp,
                     is_registered: false
                 }).then((result) => {
                     const mailOptions = {
                         from: 'vrukshamnotifications@gmail.com',
-                        to: data["email"],
+                        to: data["email_address"],
                         subject: 'Your OTP for verification',
                         text: `Your OTP is: ${otp}`
                     };
                     transporter.sendMail(mailOptions);
-                    return res.status(200).json({ message: "Otp Sent Successfully to your registered mail id.", otp: otp, mail: data["email"],mobile:data["mobile"] });
+                    return res.status(200).json({ message: "Otp Sent Successfully to your registered mail id.", otp: otp, mail: data["email"], mobile: data["mobile"] });
                 }).catch((err) => {
                     return res.status(500).json({ message: "Not able to store data or send email2", error: err });
                 });
@@ -96,16 +97,17 @@ verifyOtp = async (req, res) => {
     try {
         const data = {
             mobile: req.body.mobile,
-            email: req.body.email,
+            email_address: req.body.email_address,
             otp: req.body.otp
         }
+        console.log(data);
         await model.UserData.findOne({ where: { mobile_number: data["mobile"] } }).then((result) => {
             id = result.id;
             const givenTime = new Date(result.updatedAt);
             const currentTime = new Date();
             const timeDifferenceMs = currentTime - givenTime;
             const timeDifferenceMinutes = timeDifferenceMs / (1000 * 60);
-            if (result && result["mail_id"]==data["email"]) {
+            if (result && result["email_address"] == data["email_address"]) {
                 if (timeDifferenceMinutes <= 2) {
                     if (result.otp == data["otp"]) {
                         return res.status(200).json({ message: "Otp Verified Successfully", status: result["is_registered"] });
@@ -133,41 +135,47 @@ registerUser = async (req, res) => {
         const month = currentDate.getMonth() + 1;
         const date = currentDate.getDate();
         const user_id = "SAMATH" + date + month + year + id;
-        const date_of_birth = req.body.dob.split("-").reverse().join("-");
-        
+
         const data = {
             name: req.body.name,
-            dob: date_of_birth,
-            gender: req.body.gender,
+            mobile_number : req.body.mobile_number,
             address: req.body.address,
-            city: req.body.city,
-            district: req.body.district,
-            state: req.body.state,
-            postal_code: req.body.postal_code,
-            user_id: user_id,
+            country_id: req.body.country_id,
             country: req.body.country,
-            // whatsapp_number: req.body.whatsapp_number,
-            mobile_number: req.body.whatsapp_number,
+            state_id: req.body.state_id,
+            state: req.body.state,
+            city_id: req.body.city_id,
+            city: req.body.city,
+            area: req.body.area,
+            pincode: req.body.pincode,
+            gender: req.body.gender,
+            dob: req.body.dob,
+            tamil_star_id: req.body.tamil_star_id,
+            tamil_star: req.body.tamil_star,
+            gothram: req.body.gothram,
+            samashrayanam: req.body.samashrayanam,
+            samashrayanam_pattam: req.body.samashrayanam_pattam,
+            bharanyasam: req.body.bharanyasam,
+            bharanyasam_pattam: req.body.bharanyasam_pattam,
+            profile_image: req.body.profile_image,
             password: req.body.password,
-            confirm_password: req.body.confirm_password,
-            is_registered: true,
-            category: req.body.category
+            user_id: user_id,
+            whatsapp_number:"",
+            user_approved:false,
+            user_status_id:"",
+            user_status:"",
+            is_registered:true
         }
-        
-        if (data["password"] == data["confirm_password"]) {
-            
-            await model.UserData.update(data, {
-                where: {
-                    mobile_number:data["mobile_number"]
-                }
-            }).then((result) => {
-                return res.status(200).json({ message: "Account has been created successfully." });
-            }).catch((err) => {
-                return res.status(500).json({ message: "Not able to signup", error: err });
-            });
-        } else {
-            return res.status(500).json({ message: "Password Mismatch", error: err });
-        }
+
+        await model.UserData.update(data, {
+            where: {
+                mobile_number: data["mobile_number"]
+            }
+        }).then((result) => {
+            return res.status(200).json({ message: "Account has been created successfully." });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to signup", error: err });
+        });
 
     } catch (error) {
         return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error });
@@ -195,10 +203,10 @@ login = async (req, res) => {
                     return res.status(500).json({ message: "Incorrect Password." });
                 }
             })
-            .catch((err) => {
+                .catch((err) => {
 
-                return res.status(500).json({ message: "Something went wrong, Please try again later11.", error: err });
-            });
+                    return res.status(500).json({ message: "Something went wrong, Please try again later11.", error: err });
+                });
         } else {
             return res.status(500).json({ message: "Invalid mobile number." });
         }
@@ -208,13 +216,13 @@ login = async (req, res) => {
     }
 }
 
-myProfile=async(req,res)=>{
+myProfile = async (req, res) => {
     try {
-        const data={
-            userId:req.body.userId
+        const data = {
+            userId: req.body.userId
         }
-        model.UserData.findOne({where:{user_id:data["userId"]}}).then((result) => {
-            return res.status(200).json({result: result });
+        model.UserData.findOne({ where: { user_id: data["userId"] } }).then((result) => {
+            return res.status(200).json({ result: result });
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
         });
@@ -229,5 +237,5 @@ module.exports = {
     verifyOtp: verifyOtp,
     registerUser: registerUser,
     login: login,
-    myProfile:myProfile
+    myProfile: myProfile
 }

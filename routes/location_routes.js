@@ -4,4 +4,7 @@ const locationController=require('../controllers/location_controller');
 router.post('/updateCountries',locationController.updateCountries);
 router.post('/updateStates',locationController.updateStates);
 router.post('/updateCities',locationController.updateCities);
+router.post('/getAllCountries',locationController.getAllCountries);
+router.post("/getAllStates",locationController.getAllStates);
+router.post("/getAllCities",locationController.getAllCities);
 module.exports=router;

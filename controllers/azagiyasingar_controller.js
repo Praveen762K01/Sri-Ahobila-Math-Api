@@ -58,7 +58,7 @@ azagiyasingarList=async(req,res)=>{
     try {
         await model.AzagiyasingarMaster.findAll().then((result) => {
             if(result.length==0){
-                return res.status(500).json({ message: "No data found."});
+                return res.status(200).json({ message: "No data found."});
             }else{return res.status(200).json(result);}
             
         }).catch((err) => {
