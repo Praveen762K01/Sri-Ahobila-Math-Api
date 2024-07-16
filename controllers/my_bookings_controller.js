@@ -72,8 +72,84 @@ const pendingApprovalCount = async (req, res) => {
     }
 };
 
+approveRejectBookingStatus = async (req, res) => {
+    try {
+        const data = {
+            end_point: req.body.end_point,
+            user_id: req.body.user_id,
+            booking_id: req.body.booking_id,
+            is_approved: req.body.is_approved,
+            approved_by: req.body.approved_by,
+            is_paid: req.body.is_paid
+        };
+
+        let bookingStatusUpdateModelToUse;
+
+        // Determine which model to use based on end_point
+        switch (data["end_point"]) {
+            case "nithyaThadiyarathanai":
+                bookingStatusUpdateModelToUse = model.NithyaThadiyarathanaiBookings;
+                break;
+            case "poornaUbayam":
+                bookingStatusUpdateModelToUse = model.PoornaUbayamBookings;
+                break;
+            case "swathi":
+                bookingStatusUpdateModelToUse = model.SwathiBookings;
+                break;
+            case "pradhosham":
+                bookingStatusUpdateModelToUse = model.PradhoshamBookings;
+                break;
+            case "homeDolai":
+                bookingStatusUpdateModelToUse = model.HomeDolai_Transaction_Table;
+                break;
+            case "sannadhiDolai":
+                bookingStatusUpdateModelToUse = model.SannadhiDolai_Transaction_Table;
+                break;
+            case "ponnadi":
+                bookingStatusUpdateModelToUse = model.Ponnadi_Transaction_Table;
+                break;
+            case "goodaraivalli":
+                bookingStatusUpdateModelToUse = model.Goodaraivalli_Transaction_Table;
+                break;
+            case "sixtyThadi":
+                bookingStatusUpdateModelToUse = model.SixtyThadi_Transaction_Table;
+                break;
+            case "chatruNithyaThadi":
+                bookingStatusUpdateModelToUse = model.Chatru_NithyaThadi_Transaction_Table;
+                break;
+            case "samashrayanam":
+                bookingStatusUpdateModelToUse = model.SamashrayanamBookings;
+                break;
+            case "bharanyasam":
+                bookingStatusUpdateModelToUse = model.BharanyasamBookings;
+                break;
+            default:
+                return res.status(400).json({ message: "Invalid end_point provided." });
+        }
+
+        // Update the booking using the determined model
+        await bookingStatusUpdateModelToUse.update(
+            {
+                is_approved: data["is_approved"],
+                approved_by: data["approved_by"],
+                is_paid: data["is_paid"]
+            },
+            { where: { id: data["booking_id"], user_id: data["user_id"] } }
+        )
+            .then((result) => {
+                return res.status(200).json({ message: "Data updated Successfully" });
+            })
+            .catch((err) => {
+                return res.status(500).json({ message: "Not able to update booking.", error: err });
+            });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
+    }
+}
 
 module.exports = {
     myBookings:myBookings,
-    pendingApprovalCount:pendingApprovalCount
+    pendingApprovalCount:pendingApprovalCount,
+    approveRejectBookingStatus:approveRejectBookingStatus
 };

@@ -105,7 +105,7 @@ deleteDatePrice = async (req, res) => {
 
 allBookings = async (req, res) => {
     try {
-        await model.PradhoshamBookings.findAll().then((result) => {
+        await model.PradhoshamBookings.findAll({where:{is_approved:"Booked",is_paid:false}}).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get data.", error: err });

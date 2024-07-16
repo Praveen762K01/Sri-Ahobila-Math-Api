@@ -84,7 +84,7 @@ bookings=async(req,res)=>{
        const data={
         user_id:req.body.user_id
        } 
-       await model.NithyaThadiyarathanaiBookings.findAll().then((result) => {
+       await model.NithyaThadiyarathanaiBookings.findAll({where:{is_approved:"Booked",is_paid:false}}).then((result) => {
         return res.status(200).json(result);
        }).catch((err) => {
         return res.status(200).json({ message: "Not able to get data.", error: err });
