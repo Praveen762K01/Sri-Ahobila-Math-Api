@@ -4,18 +4,22 @@ const model = require('../models');
 // Admin Portal Api
 createDatePrice = async (req, res) => {
     try {
-        const currentDate = new Date();
-        const requestDataDate = new Date(req.body.date);
-
-        if (requestDataDate < currentDate) {
-            return res.status(500).json({ message: "Date must be today or in the future." });
-        }
-
         const data = {
             date: req.body.date,
             price: req.body.price,
             is_active: true
         };
+
+        const _date = new Date();
+        const year = _date.getFullYear();
+        const month =  (_date.getMonth() + 1)<10?('0'+ (_date.getMonth() + 1)): _date.getMonth() + 1;
+        const date = _date.getDate();
+        const currentDate = year + "-" + month+ "-" + date;
+
+        // Validate if from_date is today or in the future
+        if (data["date"] < currentDate) {
+            return res.status(500).json({ message: "Date must be today or in the future." });
+        }
 
         const existingPrice = await model.SwathiPrice.findOne({ where: { date: data.date } });
 
@@ -25,7 +29,7 @@ createDatePrice = async (req, res) => {
 
         await model.SwathiPrice.create(data)
             .then((result) => {
-                return res.status(200).json({ message: "Price Created Successfully." });
+                return res.status(200).json({ message: "Swathi Date Created Successfully." });
             })
             .catch((err) => {
                 return res.status(500).json({ message: "Not able to create price.", error: err });

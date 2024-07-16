@@ -99,6 +99,9 @@ module.exports = {
       is_registered: {
         type: Sequelize.BOOLEAN
       },
+      is_rejected: {
+        type: Sequelize.BOOLEAN
+      },
       user_status: {
         type: Sequelize.STRING
       },

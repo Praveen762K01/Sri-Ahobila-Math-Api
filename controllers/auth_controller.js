@@ -165,7 +165,8 @@ registerUser = async (req, res) => {
             user_status_id:"",
             user_status:"",
             is_registered:true,
-            is_active:false
+            is_active:false,
+            is_rejected:false
         }
 
         await model.UserData.update(data, {
@@ -189,14 +190,16 @@ login = async (req, res) => {
             mobile: req.body.mobile,
             password: req.body.password
         }
-        console.log(data["mobile"].length == 10);
+        
         if (data["mobile"].length == 10) {
-            console.log("inside");
             await model.UserData.findOne({
                 where: {
                     mobile_number: data["mobile"]
                 }
             }).then((result) => {
+                if(result.is_active==false){
+                    return res.status(500).json({ message: "Your account is deactivated. Please contact admin." });
+                }
                 if (result.password == data["password"]) {
 
                     return res.status(200).json({ message: "Login Successful.", result: result });
@@ -212,14 +215,14 @@ login = async (req, res) => {
             return res.status(500).json({ message: "Invalid mobile number." });
         }
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Something went wrong, Please try again later22.", error: error });
     }
 }
 
+
 memberApprovalList = async (req, res) => {
     try {
-        model.UserData.findAll({ where: { is_registered: true,user_approved:false } }).then((result) => {
+        model.UserData.findAll({ where: { is_registered: true,user_approved:false,is_rejected:false } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
@@ -231,10 +234,15 @@ memberApprovalList = async (req, res) => {
 
 approveUser = async (req, res) => {
     const data={
-       user_id:req.body.user_id
+       user_id:req.body.user_id,
+       user_approved:req.body.user_approved,
+       is_rejected:req.body.is_rejected,
+       is_active:req.body.is_active
     };
     try {
-        model.UserData.update({user_approved: true,is_active:true}, {
+        model.UserData.update({user_approved:data["user_approved"],
+            is_rejected:data["is_rejected"],
+            is_active:data["is_active"]}, {
             where: {
               user_id:data["user_id"]  
             }

@@ -44,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
     is_active:DataTypes.BOOLEAN,
     user_status_id:DataTypes.STRING,
     user_status:DataTypes.STRING,
-    is_registered:DataTypes.BOOLEAN
+    is_registered:DataTypes.BOOLEAN,
+    is_rejected:DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'UserData',

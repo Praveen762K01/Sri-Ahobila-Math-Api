@@ -11,7 +11,7 @@ createPrice = async (req, res) => {
             is_active:true
         }}).then(async(result) => {
             await model.PoornaUbayamPrice.create(data).then((result) => {
-            return res.status(200).json({ message: "Price Created Successfully." });
+            return res.status(200).json({ message: "Poorna Ubayam Price Created Successfully." });
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to create price.", error: err });
         }); 

@@ -3,20 +3,6 @@ const model = require('../models');
 
 createDate = async (req, res) => {
     try {
-        const currentDate = new Date();
-        const requestDataFromDate = new Date(req.body.from_date);
-        const requestDataToDate = new Date(req.body.to_date);
-
-        // Validate if from_date is today or in the future
-        if (requestDataFromDate < currentDate) {
-            return res.status(500).json({ message: "From date must be today or in the future." });
-        }
-
-        // Validate if to_date is greater than from_date
-        if (requestDataToDate <= requestDataFromDate) {
-            return res.status(500).json({ message: "To date must be greater than from date." });
-        }
-
         const data = {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
@@ -24,6 +10,23 @@ createDate = async (req, res) => {
             price: req.body.price,
             is_active: true
         }
+       
+        const _date = new Date();
+        const year = _date.getFullYear();
+        const month =  (_date.getMonth() + 1)<10?('0'+ (_date.getMonth() + 1)): _date.getMonth() + 1;
+        const date = _date.getDate();
+        const currentDate = year + "-" + month+ "-" + date;
+
+        // Validate if from_date is today or in the future
+        if (data["from_date"] < currentDate) {
+            return res.status(500).json({ message: "From date must be today or in the future." });
+        }
+
+        // Validate if to_date is greater than from_date
+        if (data["to_date"] <= data["from_date"]) {
+            return res.status(500).json({ message: "To date must be greater than from date." });
+        }
+        
         await model.Chatru_NithyaThadi_Master_Table.update({ is_active: false }, { where: {
             is_active:true
         }}).then(async(result) => {

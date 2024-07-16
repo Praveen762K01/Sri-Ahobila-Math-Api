@@ -3,35 +3,40 @@ const model = require('../models');
 
 createDate = async (req, res) => {
     try {
-        const currentDate = new Date();
-        const requestDataFromDate = new Date(req.body.from_date);
-        const requestDataToDate = new Date(req.body.to_date);
-
-        // Validate if from_date is today or in the future
-        if (requestDataFromDate < currentDate) {
-            return res.status(500).json({ message: "From date must be today or in the future." });
-        }
-
-        // Validate if to_date is greater than from_date
-        if (requestDataToDate <= requestDataFromDate) {
-            return res.status(500).json({ message: "To date must be greater than from date." });
-        }
-
-        // Calculate difference in days
-        const differenceInDays = Math.round((requestDataToDate - requestDataFromDate) / (1000 * 60 * 60 * 24));
-
-        // Validate if difference is at least 60 days
-        if (differenceInDays < 60) {
-            return res.status(500).json({ message: "Difference between from date and to date must be at least 60 days." });
-        }
-
         const data = {
             from_date: req.body.from_date,
             to_date: req.body.to_date,
             month_name: req.body.month_name,
             price: req.body.price,
             is_active: true
-        };
+        }
+ 
+        const _date = new Date();
+        const year = _date.getFullYear();
+        const month =  (_date.getMonth() + 1)<10?('0'+ (_date.getMonth() + 1)): _date.getMonth() + 1;
+        const date = _date.getDate();
+        const currentDate = year + "-" + month+ "-" + date;
+
+        // Validate if from_date is today or in the future
+        if (data["from_date"] < currentDate) {
+            return res.status(500).json({ message: "From date must be today or in the future." });
+        }
+
+        // Validate if to_date is greater than from_date
+        if (data["to_date"] <= data["from_date"]) {
+            return res.status(500).json({ message: "To date must be greater than from date." });
+        }
+         // Convert from_date and to_date to Date objects
+         const fromDate = new Date(data.from_date);
+         const toDate = new Date(data.to_date);
+ 
+         // Calculate difference in days
+         const differenceInDays = Math.round((toDate - fromDate) / (1000 * 60 * 60 * 24));
+ 
+         // Validate if difference is at least 60 days
+         if (differenceInDays < 60) {
+             return res.status(500).json({ message: "Difference between from date and to date must be at least 60 days." });
+         }
 
         // Update existing active record to is_active: false
         await model.SixtyThadi_Master_Table.update(
@@ -42,7 +47,7 @@ createDate = async (req, res) => {
         // Create new record with the provided data
         await model.SixtyThadi_Master_Table.create(data)
             .then((result) => {
-                return res.status(200).json({ message: "Price Created Successfully." });
+                return res.status(200).json({ message: "Thadiyarathanai Price Created Successfully." });
             })
             .catch((err) => {
                 return res.status(500).json({ message: "Not able to create price.", error: err });
