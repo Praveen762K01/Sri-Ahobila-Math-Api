@@ -50,7 +50,7 @@ getDate = async (req, res) => {
             if (result.length > 0) {
                 return res.status(200).json(result);
             } else {
-                return res.status(500).json({ message: "No price found for Bharanyasam. So not able to book now." });
+                return res.status(500).json({ message: "No price found for Bharanyasam. Please contact admin." });
             }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });

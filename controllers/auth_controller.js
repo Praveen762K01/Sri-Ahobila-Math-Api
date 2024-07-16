@@ -164,7 +164,8 @@ registerUser = async (req, res) => {
             user_approved:false,
             user_status_id:"",
             user_status:"",
-            is_registered:true
+            is_registered:true,
+            is_active:false
         }
 
         await model.UserData.update(data, {
@@ -216,6 +217,94 @@ login = async (req, res) => {
     }
 }
 
+memberApprovalList = async (req, res) => {
+    try {
+        model.UserData.findAll({ where: { is_registered: true,user_approved:false } }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "No Data Found" });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong" });
+    }
+}
+
+approveUser = async (req, res) => {
+    const data={
+       user_id:req.body.user_id
+    };
+    try {
+        model.UserData.update({user_approved: true,is_active:true}, {
+            where: {
+              user_id:data["user_id"]  
+            }
+        }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "No Data Found" });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong" });
+    }
+}
+
+usersList = async (req, res) => {
+    try {
+        model.UserData.findAll({ where: { is_registered: true,user_approved:true} }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "No Data Found" });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong" });
+    }
+}
+
+activeUsersList = async (req, res) => {
+    try {
+        model.UserData.findAll({ where: { is_registered: true,user_approved:true,is_active:true} }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "No Data Found" });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong" });
+    }
+}
+
+inActiveUsersList = async (req, res) => {
+    try {
+        model.UserData.findAll({ where: { is_registered: true,user_approved:true,is_active:false} }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "No Data Found" });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong" });
+    }
+}
+
+activateDeactivateUser = async (req, res) => {
+    const data={
+       user_id:req.body.user_id,
+       is_active:req.body.is_active
+    };
+    try {
+        model.UserData.update({is_active:data["is_active"]}, {
+            where: {
+              user_id:data["user_id"]  
+            }
+        }).then((result) => {
+            return res.status(200).json(result);
+        }).catch((err) => {
+            return res.status(500).json({ message: "No Data Found" });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something Went Wrong" });
+    }
+}
+
+
 myProfile = async (req, res) => {
     try {
         const data = {
@@ -237,5 +326,11 @@ module.exports = {
     verifyOtp: verifyOtp,
     registerUser: registerUser,
     login: login,
-    myProfile: myProfile
+    myProfile: myProfile,
+    memberApprovalList:memberApprovalList,
+    approveUser:approveUser,
+    usersList:usersList,
+    activeUsersList:activeUsersList,
+    inActiveUsersList:inActiveUsersList,
+    activateDeactivateUser:activateDeactivateUser
 }

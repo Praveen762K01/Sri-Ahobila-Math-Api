@@ -90,6 +90,9 @@ module.exports = {
       user_approved: {
         type: Sequelize.BOOLEAN
       },
+      is_active: {
+        type: Sequelize.BOOLEAN
+      },
       user_status_id: {
         type: Sequelize.STRING
       },

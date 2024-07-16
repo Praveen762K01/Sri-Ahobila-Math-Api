@@ -23,7 +23,7 @@ getThirunakshatramDate = async (req, res) => {
         if (allThirunakshatramDates.length > 0) {
             return res.status(200).json(allThirunakshatramDates);
         } else {
-            return res.status(500).json({ message: "No price found for Thirunakshatram. So not able to book now." });
+            return res.status(500).json({ message: "No price found for Thirunakshatram. Please contact admin." });
         }
 
     } catch (error) {
@@ -53,7 +53,7 @@ getKainkaryamDate = async (req, res) => {
         if (allKainkaryamDates.length > 0) {
             return res.status(200).json(allKainkaryamDates);
         } else {
-            return res.status(500).json({ message: "No price found for Kainkaryam. So not able to book now." });
+            return res.status(500).json({ message: "No price found for Kainkaryam. Please contact admin." });
         }
 
     } catch (error) {

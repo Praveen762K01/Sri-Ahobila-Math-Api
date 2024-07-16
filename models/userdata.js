@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     otp: DataTypes.STRING,
     user_id:DataTypes.STRING,
     user_approved:DataTypes.BOOLEAN,
+    is_active:DataTypes.BOOLEAN,
     user_status_id:DataTypes.STRING,
     user_status:DataTypes.STRING,
     is_registered:DataTypes.BOOLEAN
