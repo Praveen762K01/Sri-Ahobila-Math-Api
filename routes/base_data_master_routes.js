@@ -11,4 +11,5 @@ router.post('/tamilStar',baseDataController.getAllTamilStar);
 router.post('/paksham',baseDataController.getAllPaksham);
 router.post('/ayanam',baseDataController.getAllAyanam);
 router.post('/thidhi',baseDataController.getAllThidhi);
+// router.post('/updateAzagiyasingar',baseDataController.updateAzagiyasingar);
 module.exports=router;

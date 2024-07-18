@@ -43,7 +43,7 @@ getDate = async (req, res) => {
     try {
         await model.BharanyasamDates.findAll({
             where: {
-                from_date: {
+                to_date: {
                     [Op.gte]: formattedCurrentDate
                 }
             }, order: [

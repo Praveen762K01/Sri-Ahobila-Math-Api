@@ -308,15 +308,81 @@ getAllThidhi = async (req, res) => {
     }
 };
 
+// =================================================================================================================================
+
+// const updateAzagiyasingar = async (req, res) => {
+//     try {
+//         // Sync the model with the database schema (create the table if it doesn't exist)
+//         await model.AzagiyasingarMaster.sync();
+
+//         const results = [];
+
+//         fs.createReadStream('Azvar.csv')
+//             .pipe(csv())
+//             .on('data', (row) => {
+//                 results.push(row);
+//             })
+//             .on('end', async () => {
+//                 const transaction = await model.sequelize.transaction();
+//                 try {
+//                     // Update all rows in the database table
+//                     for (const row of results) {
+//                         await model.AzagiyasingarMaster.create(
+//                             {
+//                                 // tamil_month_name: row.Thamiz_Month,
+//                                 pattam_no: row.Pattam_No,
+//                                 name: row.Pattam_Name,
+//                                 dob_tamil_month: row.DOB_Thamiz_Month_Name,
+//                                 dob_tamil_star: row.DOB_Thamiz_Stars_name,
+//                                 dob_english_date: "",
+//                                 pattam_alive: row.Pattam_Alive(Y/N)===N?false:true,
+//                                 thirunakshatram: row.Pattam_Thirynakshatram===N?false:true,
+//                                 kainkaryam: row.Pattam_Kainkaryam===N?false:true,
+//                                 dod_tamil_month: row.DOD_Remem_Thamiz_Month,
+//                                 dod_english_date: "",
+//                                 dod_paksham: row.DOD_Remem_Paksham,
+//                                 dod_thidhi: row.DOD_Remem_Thamiz_Thidhi,
+//                                 brindavan_location: row.Pattam_Brindavan_location,
+//                                 is_active: true,
+//                                 thirunakshatram_price:"",
+//                                 kainkaryam_price:""
+//                             },
+//                             { transaction }
+//                         );
+//                     }
+
+//                     await transaction.commit();
+//                     return res.status(200).json({ message: "Updated successfully." });
+//                 } catch (error) {
+//                     await transaction.rollback();
+//                     console.error('Error during database operation:', error);
+//                     return res.status(500).json({ message: "Error updating" });
+//                 }
+//             })
+//             .on('error', (error) => {
+//                 console.error('Error reading CSV file:', error);
+//                 return res.status(500).json({ message: "Error reading CSV file" });
+//             });
+
+//     } catch (error) {
+//         console.error('Error:', error);
+//         return res.status(500).json({ message: "Error updating" });
+//     }
+// };
+
+
+
 module.exports = {
     updateTamilMonth: updateTamilMonth,
-    updateTamilStar:updateTamilStar,
-    updatePaksham:updatePaksham,
-    updateAyanam:updateAyanam,
-    updateThidhi:updateThidhi,   
-    getAllTamilMonth:getAllTamilMonth,
-    getAllTamilStar:getAllTamilStar,
-    getAllAyanam:getAllAyanam,
-    getAllPaksham:getAllPaksham,
-    getAllThidhi:getAllThidhi
+    updateTamilStar: updateTamilStar,
+    updatePaksham: updatePaksham,
+    updateAyanam: updateAyanam,
+    updateThidhi: updateThidhi,
+    getAllTamilMonth: getAllTamilMonth,
+    getAllTamilStar: getAllTamilStar,
+    getAllAyanam: getAllAyanam,
+    getAllPaksham: getAllPaksham,
+    getAllThidhi: getAllThidhi
+    // ,
+    // updateAzagiyasingar:updateAzagiyasingar
 };

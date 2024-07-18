@@ -64,7 +64,7 @@ getDate= async (req, res) => {
 
     try {
         await model.SixtyThadi_Master_Table.findOne({where:{
-            is_active:true, from_date: {
+            is_active:true, to_date: {
                 [Op.gte]: formattedCurrentDate
             }
         }}).then((result) => {

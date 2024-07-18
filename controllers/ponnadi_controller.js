@@ -133,6 +133,16 @@ newBooking = async (req, res) => {
             is_paid:false,
             approved_by:""
         }
+
+         // Check the three tables
+         const tables = [model.HomeDolai_Transaction_Table, model.SannadhiDolai_Transaction_Table, model.Ponnadi_Transaction_Table];
+         const checkData = await Promise.all(tables.map(table => table.findOne({ where: { date:data["date"], is_approved: "Approved" } })));
+ 
+         // If any data is found in the tables
+         if (checkData.some(data => data !== null)) {
+             return res.status(400).json({ message: "This Slot is already booked. Please try on other date." });
+         }
+         
         await model.Ponnadi_Transaction_Table.create(data).then((result) => {
             return res.status(200).json({ message: "Ponnadi Booked Successfully." });
         }).catch((err) => {

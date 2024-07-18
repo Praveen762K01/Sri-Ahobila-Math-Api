@@ -48,7 +48,7 @@ getDate = async (req, res) => {
     const formattedCurrentDate = dateFormat.toISOString().split('T')[0];
     try {
         await model.Chatru_NithyaThadi_Master_Table.findOne({where:{
-            is_active:true, from_date: {
+            is_active:true, to_date: {
                 [Op.gte]: formattedCurrentDate
             }
         }, order: [
