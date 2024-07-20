@@ -9,39 +9,60 @@ createDate = async (req, res) => {
             month_name: req.body.month_name,
             price: req.body.price,
             is_active: true
-        }
-       
+        };
+
         const _date = new Date();
         const year = _date.getFullYear();
-        const month =  (_date.getMonth() + 1)<10?('0'+ (_date.getMonth() + 1)): _date.getMonth() + 1;
+        const month = (_date.getMonth() + 1) < 10 ? ('0' + (_date.getMonth() + 1)) : (_date.getMonth() + 1);
         const date = _date.getDate();
-        const currentDate = year + "-" + month+ "-" + date;
+        const currentDate = `${year}-${month}-${date}`;
 
         // Validate if from_date is today or in the future
         if (data["from_date"] < currentDate) {
-            return res.status(500).json({ message: "From date must be today or in the future." });
+            return res.status(400).json({ message: "From date must be today or in the future." });
         }
 
         // Validate if to_date is greater than from_date
         if (data["to_date"] <= data["from_date"]) {
-            return res.status(500).json({ message: "To date must be greater than from date." });
+            return res.status(400).json({ message: "To date must be greater than from date." });
         }
 
-        await model.SannadhiDolai_Master_Table.update({ is_active: false }, { where: {
-            is_active:true
-        }}).then(async(result) => {
-            await model.SannadhiDolai_Master_Table.create(data).then((result) => {
-            return res.status(200).json({ message: "Dolai Date Created Successfully." });
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
-        }); 
-        }).catch((err) => {
-            return res.status(500).json({ message: "Not able to create price.", error: err });
+        // Fetch existing dates and check for overlaps
+        const existingDates = await model.SannadhiDolai_Master_Table.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        from_date: {
+                            [Op.lte]: data.to_date
+                        },
+                        to_date: {
+                            [Op.gte]: data.from_date
+                        }
+                    }
+                ]
+            }
         });
+
+        if (existingDates.length > 0) {
+            return res.status(400).json({ message: "The provided date range overlaps with an existing date range." });
+        }
+
+        // Deactivate previous active entries
+        await model.SannadhiDolai_Master_Table.update({ is_active: false }, {
+            where: {
+                is_active: true
+            }
+        });
+
+        // Create new date entry
+        await model.SannadhiDolai_Master_Table.create(data);
+        return res.status(200).json({ message: "Dolai Date Created Successfully." });
+
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ message: "Something Went Wrong, Please try again later.", error: error });
     }
-}
+};
 
 getDate = async (req, res) => {
     const dateFormat = new Date();

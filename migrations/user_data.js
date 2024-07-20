@@ -105,6 +105,9 @@ module.exports = {
       user_status: {
         type: Sequelize.STRING
       },
+      group_id: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

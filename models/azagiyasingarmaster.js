@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     brindavan_location: DataTypes.STRING,
     is_active: DataTypes.BOOLEAN,
     thirunakshatram_price:DataTypes.STRING,
-    kainkaryam_price:DataTypes.STRING
+    kainkaryam_price:DataTypes.STRING,
+    azagiyasingar_image:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'AzagiyasingarMaster',

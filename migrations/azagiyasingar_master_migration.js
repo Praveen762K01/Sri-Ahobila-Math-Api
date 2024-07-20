@@ -57,6 +57,9 @@ module.exports = {
       kainkaryam_price:{
         type:Sequelize.STRING
       },
+      azagiyasingar_image:{
+        type:Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -13,7 +13,8 @@ createAzvar = async (req, res) => {
             dod_english_date: req.body.dod_english_date,
             is_active: req.body.is_active,
             thirunakshatram_price: req.body.thirunakshatram_price,
-            kainkaryam_price: req.body.kainkaryam_price
+            kainkaryam_price: req.body.kainkaryam_price,
+            azvar_image:req.body.azvar_image
         }
         await model.AzvarMaster.create(data).then((result) => {
             return res.status(200).json({ message: "Azvar Created Successfully." });

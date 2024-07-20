@@ -3,6 +3,8 @@ const router=express.Router();
 const imageController=require('../controllers/image_controller');
 const imageUploader=require('../helpers/image_uploader')
 
-router.post('/upload',imageUploader.upload.single('image'),imageController.upload);
+router.post('/userImageUpload',imageUploader.userImageUpload.single('image'),imageController.upload);
+router.post('/azvarImageUpload',imageUploader.azvarUpload.single('image'),imageController.upload);
+router.post('/azagiyasingarImageUpload',imageUploader.azagiyasingarUpload.single('image'),imageController.upload);
 
 module.exports=router;

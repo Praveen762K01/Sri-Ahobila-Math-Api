@@ -197,7 +197,7 @@ login = async (req, res) => {
                     mobile_number: data["mobile"]
                 }
             }).then((result) => {
-                if(result.is_active==false){
+                if(result.is_active===false){
                     return res.status(500).json({ message: "Your account is deactivated. Please contact admin." });
                 }
                 if (result.password == data["password"]) {

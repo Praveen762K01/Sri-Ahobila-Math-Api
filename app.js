@@ -26,6 +26,11 @@ const locationRouter=require('./routes/location_routes');
 const baseDataRouter=require('./routes/base_data_master_routes');
 const thirunakshatramRouter=require('./routes/thirunakshatram_routes');
 const kainkaryamRouter=require('./routes/kainkaryam_routes');
+const flashMessageRouter=require('./routes/flash_message_routes');
+const groupRouter=require('./routes/group_routes');
+const categoryRouter=require('./routes/member_category_routes');
+
+
 const app = express();
 
 // Middleware
@@ -59,6 +64,9 @@ app.use('/api/location',locationRouter);
 app.use('/api/base_data',baseDataRouter);
 app.use('/api/thirunakshatram',thirunakshatramRouter);
 app.use('/api/kainkaryam',kainkaryamRouter);
+app.use('/api/flashMessage',flashMessageRouter);
+app.use('/api/group',groupRouter);
+app.use('/api/category',categoryRouter);
 
 module.exports = app;
 
