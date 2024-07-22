@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const model = require('../models');
 
 getThirunakshatramDate = async (req, res) => {
@@ -121,12 +122,10 @@ newKainkaryamBooking = async (req, res) => {
 
 getAllThirunakshatramBookings= async (req, res) => {
     try {
-        await model.ThirunakshatramTransactions.findAll().then((result) => {
-            if(result.length>0){
+        await model.ThirunakshatramTransactions.findAll({where:{is_paid:true,is_approved:true}}).then((result) => {
+           
                 return res.status(200).json(result);
-            }else{
-                return res.status(200).json({ message: "Not data found.", error: err });
-            }
+           
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });
@@ -137,12 +136,10 @@ getAllThirunakshatramBookings= async (req, res) => {
 
 getAllKainkaryamBookings= async (req, res) => {
     try {
-        await model.KainkaryamTransactions.findAll().then((result) => {
-            if(result.length>0){
+        await model.KainkaryamTransactions.findAll({where:{is_paid:true,is_approved:true}}).then((result) => {
+            
                 return res.status(200).json(result);
-            }else{
-                return res.status(200).json({ message: "Not data found.", error: err });
-            }
+           
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to get price.", error: err });
         });

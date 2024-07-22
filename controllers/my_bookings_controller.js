@@ -6,29 +6,25 @@ const myBookings = async (req, res) => {
 
         const bookingsPromises = [
             { model: model.BharanyasamBookings, name: "Bharanyasam" },
-            { model: model.Chatru_NithyaThadi_Transaction_Table, name: "Chatru NithyaThadi" ,endPoint:"chatruNithyaThadi"},
-            { model: model.FirstThirunakshatramBookings, name: "First Thirunakshatram" },
-            { model: model.FourtyFiveKainkaryamBookings, name: "45 Kainkaryam" },
-            { model: model.FourtyFiveThirunakshatramBookings, name: "44 Thirunakshatram" },
-            { model: model.FourtyFourKainkaryamBookings, name: "44 Kainkaryam" },
-            { model: model.FourtyFourThirunakshatramBookings, name: "44 Thirunakshatram" },
-            { model: model.FourtySixThirunakshatramBookings, name: "46 Thirunakshatram" },
-            { model: model.Goodaraivalli_Transaction_Table, name: "Goodaraivalli",endPoint:"goodaraivalli" },
-            { model: model.HomeDolai_Transaction_Table, name: "Dolai" ,endPoint:"dolai"},
+            { model: model.Chatru_NithyaThadi_Transaction_Table, name: "Chatru NithyaThadi", endPoint: "chatruNithyaThadi" },
+            { model: model.Goodaraivalli_Transaction_Table, name: "Goodaraivalli", endPoint: "goodaraivalli" },
+            { model: model.HomeDolai_Transaction_Table, name: "Home Dolai", endPoint: "dolai" },
             { model: model.NithyaThadiyarathanaiBookings, name: "Nithya Thadiyarathanai" },
-            { model: model.Ponnadi_Transaction_Table, name: "Ponnadi" ,endPoint:"ponnadi"},
-            { model: model.PoornaUbayamBookings, name: "Poorna Ubayam" ,endPoint:"poornaUbayam"},
+            { model: model.ThirunakshatramTransactions, name: "Thirunakshatram" },
+            { model: model.KainkaryamTransactions, name: "Kainkaryam" },
+            { model: model.Ponnadi_Transaction_Table, name: "Ponnadi", endPoint: "ponnadi" },
+            { model: model.PoornaUbayamBookings, name: "Poorna Ubayam", endPoint: "poornaUbayam" },
             { model: model.PradhoshamBookings, name: "Pradhosham" },
             { model: model.SamashrayanamBookings, name: "Samashrayanam" },
-            { model: model.SannadhiDolai_Transaction_Table, name: "Sannadhi Dolai" ,endPoint:"sannadhiDolai"},
-            { model: model.SixtyThadi_Transaction_Table, name: "60 Day Thadiyarathanai",endPoint:"sixtyThadi" },
+            { model: model.SannadhiDolai_Transaction_Table, name: "Sannadhi Dolai", endPoint: "sannadhiDolai" },
+            { model: model.SixtyThadi_Transaction_Table, name: "60 Day Thadiyarathanai", endPoint: "sixtyThadi" },
             { model: model.SwathiBookings, name: "Swathi" }
         ];
 
-        const bookingsResults = await Promise.all(bookingsPromises.map(async ({ model, name,endPoint }) => {
+        const bookingsResults = await Promise.all(bookingsPromises.map(async ({ model, name, endPoint }) => {
             const bookings = await model.findAll({ where: { user_id: userId } });
             // Add booking_name to each booking object
-            return bookings.map(booking => ({ ...booking.toJSON(), booking_name: name,end_point:endPoint }));
+            return bookings.map(booking => ({ ...booking.toJSON(), booking_name: name, end_point: endPoint }));
         }));
 
         // Flatten the array of arrays into a single array
@@ -45,20 +41,20 @@ const pendingApprovalCount = async (req, res) => {
         const userId = req.body.user_id;
 
         const bookingsPromises = [
-            { model: model.BharanyasamBookings, name: "Bharanyasam",endPoint: "bharanyasam" },
+            { model: model.BharanyasamBookings, name: "Bharanyasam", endPoint: "bharanyasam" },
             { model: model.Chatru_NithyaThadi_Transaction_Table, name: "Chatru NithyaThadi", endPoint: "chatruNithyaThadi" },
             { model: model.ThirunakshatramTransactions, name: "Thirunakshatram", endPoint: "thirunakshatram" },
-            { model: model.KainkaryamTransactions, name: "Kainkaryam", endPoint: "kainkaryam"  },
+            { model: model.KainkaryamTransactions, name: "Kainkaryam", endPoint: "kainkaryam" },
             { model: model.Goodaraivalli_Transaction_Table, name: "Goodaraivalli", endPoint: "goodaraivalli" },
             { model: model.HomeDolai_Transaction_Table, name: "Home Dolai", endPoint: "homeDolai" },
-            { model: model.NithyaThadiyarathanaiBookings, name: "Nithya Thadiyarathanai", endPoint:"nithyaThadiyarathanai" },
+            { model: model.NithyaThadiyarathanaiBookings, name: "Nithya Thadiyarathanai", endPoint: "nithyaThadiyarathanai" },
             { model: model.Ponnadi_Transaction_Table, name: "Ponnadi", endPoint: "ponnadi" },
             { model: model.PoornaUbayamBookings, name: "Poorna Ubayam", endPoint: "poornaUbayam" },
-            { model: model.PradhoshamBookings, name: "Pradhosham", endPoint:"pradhosham" },
-            { model: model.SamashrayanamBookings, name: "Samashrayanam", endPoint:"samashrayanam" },
+            { model: model.PradhoshamBookings, name: "Pradhosham", endPoint: "pradhosham" },
+            { model: model.SamashrayanamBookings, name: "Samashrayanam", endPoint: "samashrayanam" },
             { model: model.SannadhiDolai_Transaction_Table, name: "Sannadhi Dolai", endPoint: "sannadhiDolai" },
             { model: model.SixtyThadi_Transaction_Table, name: "60 Day Thadiyarathanai", endPoint: "sixtyThadi" },
-            { model: model.SwathiBookings, name: "Swathi", endPoint:"swathi" }
+            { model: model.SwathiBookings, name: "Swathi", endPoint: "swathi" }
         ];
 
         const bookingsCounts = await Promise.all(bookingsPromises.map(async ({ model, name, endPoint }) => {
@@ -123,6 +119,12 @@ approveRejectBookingStatus = async (req, res) => {
             case "bharanyasam":
                 bookingStatusUpdateModelToUse = model.BharanyasamBookings;
                 break;
+                case "thirunakshatram":
+                bookingStatusUpdateModelToUse = model.ThirunakshatramTransactions;
+                break;
+            case "kainkaryam":
+                bookingStatusUpdateModelToUse = model.KainkaryamTransactions;
+                break;
             default:
                 return res.status(400).json({ message: "Invalid end_point provided." });
         }
@@ -149,7 +151,7 @@ approveRejectBookingStatus = async (req, res) => {
 }
 
 module.exports = {
-    myBookings:myBookings,
-    pendingApprovalCount:pendingApprovalCount,
-    approveRejectBookingStatus:approveRejectBookingStatus
+    myBookings: myBookings,
+    pendingApprovalCount: pendingApprovalCount,
+    approveRejectBookingStatus: approveRejectBookingStatus
 };
