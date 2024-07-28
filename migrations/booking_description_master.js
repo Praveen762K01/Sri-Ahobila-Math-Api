@@ -2,23 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Goodaraivalli_Master_Tables', {
+    await queryInterface.createTable('BookingDescriptions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      date: {
-        type: Sequelize.STRING
+      description: {
+        type: Sequelize.TEXT
       },
-      price: {
+      booking_type: {
         type: Sequelize.STRING
       },
       is_active: {
         type: Sequelize.BOOLEAN
       },
-      image: {
+      created_by: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -32,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Goodaraivalli_Master_Tables');
+    await queryInterface.dropTable('BookingDescriptions');
   }
 };

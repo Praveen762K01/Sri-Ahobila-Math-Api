@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Goodaraivalli_Master_Table extends Model {
+  class BookingDescription extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Goodaraivalli_Master_Table.init({
-    date: DataTypes.STRING,
-    price: DataTypes.STRING,
+  BookingDescription.init({
+    description: DataTypes.TEXT,
+    booking_type: DataTypes.STRING,
     is_active: DataTypes.BOOLEAN,
-    image:DataTypes.STRING
+    created_by: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Goodaraivalli_Master_Table',
+    modelName: 'BookingDescription',
   });
-  return Goodaraivalli_Master_Table;
+  return BookingDescription;
 };

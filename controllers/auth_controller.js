@@ -14,7 +14,6 @@ function generateOTP() {
     return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-let user_mobile = "";
 let id = 0;
 sendOtp = async (req, res) => {
     try {
@@ -198,7 +197,7 @@ login = async (req, res) => {
                 }
             }).then((result) => {
                 if(result.is_active===false){
-                    return res.status(500).json({ message: "Your account is deactivated. Please contact admin." });
+                    return res.status(500).json({ message: " Your Registration is pending for approval. Please try after some time." });
                 }
                 if (result.password == data["password"]) {
 
@@ -209,7 +208,7 @@ login = async (req, res) => {
             })
                 .catch((err) => {
 
-                    return res.status(500).json({ message: "Something went wrong, Please try again later11.", error: err });
+                    return res.status(500).json({ message: "User Not Found.", error: err });
                 });
         } else {
             return res.status(500).json({ message: "Invalid mobile number." });
@@ -237,8 +236,10 @@ approveUser = async (req, res) => {
        user_id:req.body.user_id,
        user_approved:req.body.user_approved,
        is_rejected:req.body.is_rejected,
-       is_active:req.body.is_active
+       is_active:req.body.is_active,
+       email_address:req.body.email_address
     };
+
     try {
         model.UserData.update({user_approved:data["user_approved"],
             is_rejected:data["is_rejected"],
@@ -247,6 +248,14 @@ approveUser = async (req, res) => {
               user_id:data["user_id"]  
             }
         }).then((result) => {
+            
+            const mailOptions = {
+                from: 'vrukshamnotifications@gmail.com',
+                to: data["email_address"],
+                subject: 'Account Verified Successfully.',
+                text: `Your Account for Sri Ahobila Math is now approved.`
+            };
+            transporter.sendMail(mailOptions);
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
