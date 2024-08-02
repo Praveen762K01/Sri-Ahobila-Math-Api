@@ -7,5 +7,6 @@ router.post('/userImageUpload',imageUploader.userImageUpload.single('image'),ima
 router.post('/azvarImageUpload',imageUploader.azvarUpload.single('image'),imageController.upload);
 router.post('/azagiyasingarImageUpload',imageUploader.azagiyasingarUpload.single('image'),imageController.upload);
 router.post('/goodaraivalliImageUpload',imageUploader.goodaraivalliImageUpload.single('image'),imageController.upload);
+router.post('/descriptionImage',imageUploader.descriptionImageUpload.single('image'),imageController.upload);
 
 module.exports=router;

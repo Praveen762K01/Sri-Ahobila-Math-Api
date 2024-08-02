@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   BookingDescription.init({
     description: DataTypes.TEXT,
     booking_type: DataTypes.STRING,
+    image: DataTypes.STRING,
     is_active: DataTypes.BOOLEAN,
     created_by: DataTypes.STRING
   }, {

@@ -5,6 +5,7 @@ const createDescription = async (req, res) => {
         const data = {
             description: req.body.description,
             booking_type: req.body.booking_type,
+            image:req.body.image,
             created_by: req.body.created_by,
             is_active: true
         };

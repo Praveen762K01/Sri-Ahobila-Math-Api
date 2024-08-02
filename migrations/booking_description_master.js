@@ -15,6 +15,9 @@ module.exports = {
       booking_type: {
         type: Sequelize.STRING
       },
+      image: {
+        type: Sequelize.STRING
+      },
       is_active: {
         type: Sequelize.BOOLEAN
       },
