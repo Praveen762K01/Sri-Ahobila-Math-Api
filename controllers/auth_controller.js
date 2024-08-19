@@ -38,51 +38,154 @@ sendOtp = async (req, res) => {
                 //         text: `Your OTP is: ${otp}`
                 //     };
                 //     transporter.sendMail(mailOptions);
-                    return res.status(500).json({ message: "User already registered. Please Login", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
+                return res.status(500).json({ message: "User already registered. Please Login", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
                 // }).catch((err) => {
                 //     return res.status(500).json({ message: "Not able to store data or send email", error: err });
                 // });
             } else
-             if (result && result.is_registered == false) {
-                const otp = generateOTP();
-                user_mobile = data["mobile"];
-                model.UserData.update({ otp: otp }, {
-                    where: {
-                        mobile_number: data["mobile"]
-                    }
-                }).then((result) => {
-                    const mailOptions = {
-                        from: 'vrukshamnotifications@gmail.com',
-                        to: data["email_address"],
-                        subject: 'Your OTP for verification',
-                        text: `Your OTP is: ${otp}`
-                    };
-                    transporter.sendMail(mailOptions);
-                    return res.status(200).json({ message: "Otp Sent Successfully", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
-                }).catch((err) => {
-                    return res.status(500).json({ message: "Not able to store data or send email", error: err });
-                });
-            } else {
-                const otp = generateOTP();
-                user_mobile = data["mobile"];
-                model.UserData.create({
-                    mobile_number: data["mobile"],
-                    email_address: data["email_address"],
-                    otp: otp,
-                    is_registered: false
-                }).then((result) => {
-                    const mailOptions = {
-                        from: 'vrukshamnotifications@gmail.com',
-                        to: data["email_address"],
-                        subject: 'Your OTP for verification',
-                        text: `Your OTP is: ${otp}`
-                    };
-                    transporter.sendMail(mailOptions);
-                    return res.status(200).json({ message: "Otp Sent Successfully to your registered mail id.", otp: otp, mail: data["email"], mobile: data["mobile"] });
-                }).catch((err) => {
-                    return res.status(500).json({ message: "Not able to store data or send email2", error: err });
-                });
-            }
+                if (result && result.is_registered == false) {
+                    const otp = generateOTP();
+                    user_mobile = data["mobile"];
+                    model.UserData.update({ otp: otp }, {
+                        where: {
+                            mobile_number: data["mobile"]
+                        }
+                    }).then((result) => {
+                        const mailOptions = {
+                            from: 'vrukshamnotifications@gmail.com',
+                            to: data["email_address"],
+                            subject: 'Your OTP for verification',
+                            text: `Your OTP is: ${otp}`
+                        };
+                        transporter.sendMail(mailOptions);
+                        return res.status(200).json({ message: "Otp Sent Successfully", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
+                    }).catch((err) => {
+                        return res.status(500).json({ message: "Not able to store data or send email", error: err });
+                    });
+                } else {
+                    const otp = generateOTP();
+                    user_mobile = data["mobile"];
+                    model.UserData.create({
+                        mobile_number: data["mobile"],
+                        email_address: data["email_address"],
+                        otp: otp,
+                        is_registered: false
+                    }).then((result) => {
+                        const mailOptions = {
+                            from: 'vrukshamnotifications@gmail.com',
+                            to: data["email_address"],
+                            subject: 'Your OTP for verification',
+                            text: `Your OTP is: ${otp}`
+                        };
+                        transporter.sendMail(mailOptions);
+                        return res.status(200).json({ message: "Otp Sent Successfully to your registered mail id.", otp: otp, mail: data["email"], mobile: data["mobile"] });
+                    }).catch((err) => {
+                        return res.status(500).json({ message: "Not able to store data or send email2", error: err });
+                    });
+                }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to read data", error: err });
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Not able to sent otp", error: error });
+    }
+}
+
+// const mobileOtp = async (req, res) => {
+//     try {
+//         const data={
+//             mobile:req.body.mobile,
+//             otp:req.body.otp
+//         }
+//         const apiKey = "66nPr0BaXUO2h6nfxoA1QQ"; // Use your API key here
+//         const apiSender = "MARSKY";
+//         const otp = data["otp"]; // Example OTP variable
+//         const mobile = data["mobile"]; // Example mobile number
+//         const msg = `${otp} is your One-Time Password (OTP).\n-Sky Marketing`;
+//         const num = mobile;
+//         const ms = encodeURIComponent(msg);
+//         const url =
+//             `https://www.smsc.co.in/api/mt/SendSMS?APIKey=${apiKey}&senderid=${apiSender}&channel=2&DCS=0&flashsms=0&number=${num}&text=${ms}&route=44&EntityId=1101442370000075992&dlttemplateid=1107171851093422866`;
+// console.log(url);
+//         const response = await fetch(url, {
+//             method: 'POST',
+//         });
+
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }else{
+//             const data = await response.text();
+//         console.log(data); // Assuming you want to log the response
+//             return res.status(200).json({ message: "Otp sent to your mobile successfully" });
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//     }
+// }
+
+createMobileUser = async (req, res) => {
+    try {
+        const data = {
+            mobile: req.body.mobile,
+            email_address: req.body.email_address
+        }
+        const apiKey = "L0GfjLmTg0e5668GhoCgEQ"; // Use your API key here
+        const apiSender = "MARSKY";
+        const otp = generateOTP(); // Example OTP variable
+        const mobile = data["mobile"]; // Example mobile number
+        const msg = `${otp} is your One-Time Password (OTP).\n-Sky Marketing`;
+        const num = mobile;
+        const ms = encodeURIComponent(msg);
+        const url =
+            `https://www.smsc.co.in/api/mt/SendSMS?APIKey=${apiKey}&senderid=${apiSender}&channel=2&DCS=0&flashsms=0&number=${num}&text=${ms}&route=44&EntityId=1101442370000075992&dlttemplateid=1107171851093422866`;
+
+        await model.UserData.findOne({ where: { mobile_number: data["mobile"] } }).then((result) => {
+            if (result && result.is_registered == true) {
+                return res.status(500).json({ message: "User already registered. Please Login", otp: otp, mail: data["email_address"], mobile: data["mobile"] });
+            } else
+                if (result && result.is_registered == false) {
+                    user_mobile = data["mobile"];
+                    model.UserData.update({ otp: otp }, {
+                        where: {
+                            mobile_number: data["mobile"]
+                        }
+                    }).then(async (result) => {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        } else {
+                            const data = await response.text();
+                            return res.status(200).json({ message: data });
+                        }
+                    }).catch((err) => {
+                        return res.status(500).json({ message: "Not able to store data or send email", error: err });
+                    });
+                } else {
+                    user_mobile = data["mobile"];
+                    model.UserData.create({
+                        mobile_number: data["mobile"],
+                        email_address: data["email_address"],
+                        otp: otp,
+                        is_registered: false
+                    }).then(async (result) => {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        } else {
+                            const data = await response.text();
+                            return res.status(200).json({ message: data });
+                        }
+                    }).catch((err) => {
+                        return res.status(500).json({ message: "Not able to store data or send email2", error: err });
+                    });
+                }
         }).catch((err) => {
             return res.status(500).json({ message: "Not able to read data", error: err });
         });
@@ -137,7 +240,7 @@ registerUser = async (req, res) => {
 
         const data = {
             name: req.body.name,
-            mobile_number : req.body.mobile_number,
+            mobile_number: req.body.mobile_number,
             address: req.body.address,
             country_id: req.body.country_id,
             country: req.body.country,
@@ -159,13 +262,13 @@ registerUser = async (req, res) => {
             profile_image: req.body.profile_image,
             password: req.body.password,
             user_id: user_id,
-            whatsapp_number:"",
-            user_approved:false,
-            user_status_id:"",
-            user_status:"",
-            is_registered:true,
-            is_active:false,
-            is_rejected:false
+            whatsapp_number: "",
+            user_approved: false,
+            user_status_id: "",
+            user_status: "",
+            is_registered: true,
+            is_active: false,
+            is_rejected: false
         }
 
         await model.UserData.update(data, {
@@ -189,14 +292,14 @@ login = async (req, res) => {
             mobile: req.body.mobile,
             password: req.body.password
         }
-        
+
         if (data["mobile"].length == 10) {
             await model.UserData.findOne({
                 where: {
                     mobile_number: data["mobile"]
                 }
             }).then((result) => {
-                if(result.is_active===false){
+                if (result.is_active === false) {
                     return res.status(500).json({ message: " Your Registration is pending for approval. Please try after some time." });
                 }
                 if (result.password == data["password"]) {
@@ -221,7 +324,7 @@ login = async (req, res) => {
 
 memberApprovalList = async (req, res) => {
     try {
-        model.UserData.findAll({ where: { is_registered: true,user_approved:false,is_rejected:false } }).then((result) => {
+        model.UserData.findAll({ where: { is_registered: true, user_approved: false, is_rejected: false } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
@@ -232,23 +335,25 @@ memberApprovalList = async (req, res) => {
 }
 
 approveUser = async (req, res) => {
-    const data={
-       user_id:req.body.user_id,
-       user_approved:req.body.user_approved,
-       is_rejected:req.body.is_rejected,
-       is_active:req.body.is_active,
-       email_address:req.body.email_address
+    const data = {
+        user_id: req.body.user_id,
+        user_approved: req.body.user_approved,
+        is_rejected: req.body.is_rejected,
+        is_active: req.body.is_active,
+        email_address: req.body.email_address
     };
 
     try {
-        model.UserData.update({user_approved:data["user_approved"],
-            is_rejected:data["is_rejected"],
-            is_active:data["is_active"]}, {
+        model.UserData.update({
+            user_approved: data["user_approved"],
+            is_rejected: data["is_rejected"],
+            is_active: data["is_active"]
+        }, {
             where: {
-              user_id:data["user_id"]  
+                user_id: data["user_id"]
             }
         }).then((result) => {
-            
+
             const mailOptions = {
                 from: 'vrukshamnotifications@gmail.com',
                 to: data["email_address"],
@@ -267,7 +372,7 @@ approveUser = async (req, res) => {
 
 usersList = async (req, res) => {
     try {
-        model.UserData.findAll({ where: { is_registered: true,user_approved:true} }).then((result) => {
+        model.UserData.findAll({ where: { is_registered: true, user_approved: true } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
@@ -279,7 +384,7 @@ usersList = async (req, res) => {
 
 activeUsersList = async (req, res) => {
     try {
-        model.UserData.findAll({ where: { is_registered: true,user_approved:true,is_active:true} }).then((result) => {
+        model.UserData.findAll({ where: { is_registered: true, user_approved: true, is_active: true } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
@@ -291,7 +396,7 @@ activeUsersList = async (req, res) => {
 
 inActiveUsersList = async (req, res) => {
     try {
-        model.UserData.findAll({ where: { is_registered: true,user_approved:true,is_active:false} }).then((result) => {
+        model.UserData.findAll({ where: { is_registered: true, user_approved: true, is_active: false } }).then((result) => {
             return res.status(200).json(result);
         }).catch((err) => {
             return res.status(500).json({ message: "No Data Found" });
@@ -302,14 +407,14 @@ inActiveUsersList = async (req, res) => {
 }
 
 activateDeactivateUser = async (req, res) => {
-    const data={
-       user_id:req.body.user_id,
-       is_active:req.body.is_active
+    const data = {
+        user_id: req.body.user_id,
+        is_active: req.body.is_active
     };
     try {
-        model.UserData.update({is_active:data["is_active"]}, {
+        model.UserData.update({ is_active: data["is_active"] }, {
             where: {
-              user_id:data["user_id"]  
+                user_id: data["user_id"]
             }
         }).then((result) => {
             return res.status(200).json(result);
@@ -344,10 +449,11 @@ module.exports = {
     registerUser: registerUser,
     login: login,
     myProfile: myProfile,
-    memberApprovalList:memberApprovalList,
-    approveUser:approveUser,
-    usersList:usersList,
-    activeUsersList:activeUsersList,
-    inActiveUsersList:inActiveUsersList,
-    activateDeactivateUser:activateDeactivateUser
+    memberApprovalList: memberApprovalList,
+    approveUser: approveUser,
+    usersList: usersList,
+    activeUsersList: activeUsersList,
+    inActiveUsersList: inActiveUsersList,
+    activateDeactivateUser: activateDeactivateUser,
+    createMobileUser:createMobileUser
 }

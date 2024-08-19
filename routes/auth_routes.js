@@ -12,5 +12,6 @@ router.post('/approveUser',authController.approveUser);
 router.post('/activeUsers',authController.activeUsersList);
 router.post('/inActiveUsers',authController.inActiveUsersList);
 router.post('/activateDeactivateUser',authController.activateDeactivateUser);
+router.post('/sendMobileOtp',authController.createMobileUser);
 
 module.exports=router;
