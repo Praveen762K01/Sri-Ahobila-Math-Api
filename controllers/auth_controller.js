@@ -14,7 +14,6 @@ function generateOTP() {
     return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-let id = 0;
 sendOtp = async (req, res) => {
     try {
         const data = {
@@ -91,38 +90,6 @@ sendOtp = async (req, res) => {
         return res.status(500).json({ message: "Not able to sent otp", error: error });
     }
 }
-
-// const mobileOtp = async (req, res) => {
-//     try {
-//         const data={
-//             mobile:req.body.mobile,
-//             otp:req.body.otp
-//         }
-//         const apiKey = "66nPr0BaXUO2h6nfxoA1QQ"; // Use your API key here
-//         const apiSender = "MARSKY";
-//         const otp = data["otp"]; // Example OTP variable
-//         const mobile = data["mobile"]; // Example mobile number
-//         const msg = `${otp} is your One-Time Password (OTP).\n-Sky Marketing`;
-//         const num = mobile;
-//         const ms = encodeURIComponent(msg);
-//         const url =
-//             `https://www.smsc.co.in/api/mt/SendSMS?APIKey=${apiKey}&senderid=${apiSender}&channel=2&DCS=0&flashsms=0&number=${num}&text=${ms}&route=44&EntityId=1101442370000075992&dlttemplateid=1107171851093422866`;
-// console.log(url);
-//         const response = await fetch(url, {
-//             method: 'POST',
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! status: ${response.status}`);
-//         }else{
-//             const data = await response.text();
-//         console.log(data); // Assuming you want to log the response
-//             return res.status(200).json({ message: "Otp sent to your mobile successfully" });
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// }
 
 createMobileUser = async (req, res) => {
     try {
@@ -202,9 +169,8 @@ verifyOtp = async (req, res) => {
             email_address: req.body.email_address,
             otp: req.body.otp
         }
-        console.log(data);
+
         await model.UserData.findOne({ where: { mobile_number: data["mobile"] } }).then((result) => {
-            id = result.id;
             const givenTime = new Date(result.updatedAt);
             const currentTime = new Date();
             const timeDifferenceMs = currentTime - givenTime;
@@ -232,12 +198,17 @@ verifyOtp = async (req, res) => {
 
 registerUser = async (req, res) => {
     try {
+        let id = 0;
+        await model.UserData.findOne({ where: { mobile_number: req.body.mobile_number } }).then((result) => {
+            id = result.id;
+        }).catch((err) => {
+            return res.status(500).json({ message: "Please try again later.", error: err });
+        });
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
         const date = currentDate.getDate();
         const user_id = "SAMATH" + date + month + year + id;
-
         const data = {
             name: req.body.name,
             mobile_number: req.body.mobile_number,
@@ -455,5 +426,5 @@ module.exports = {
     activeUsersList: activeUsersList,
     inActiveUsersList: inActiveUsersList,
     activateDeactivateUser: activateDeactivateUser,
-    createMobileUser:createMobileUser
+    createMobileUser: createMobileUser
 }
