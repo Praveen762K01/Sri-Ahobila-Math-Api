@@ -67,6 +67,7 @@ azvarList = async (req, res) => {
 updateAzvar = async (req, res) => {
     try {
         const data = {
+            id:req.body.id,
             azvar: req.body.azvar,
             dob_tamil_month: req.body.dob_tamil_month,
             dob_tamil_star: req.body.dob_tamil_star,
