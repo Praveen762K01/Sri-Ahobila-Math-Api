@@ -261,6 +261,7 @@ registerAdmin = async (req, res) => {
     try {
         const data = {
             name: req.body.name,
+            email_address:req.body.email_address,
             mobile_number: req.body.mobile_number,
             address: req.body.address,
             country_id: req.body.country_id,
