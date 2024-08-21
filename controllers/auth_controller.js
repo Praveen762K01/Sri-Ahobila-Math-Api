@@ -258,11 +258,19 @@ verifyOtp = async (req, res) => {
 // }
 const registerUser = async (req, res) => {
     try {
+        // Validate required fields
+        const requiredFields = ['name', 'mobile_number', 'address', 'country_id', 'country', 'state_id', 'state', 'city_id', 'city', 'area', 'pincode', 'gender', 'dob', 'tamil_star_id', 'tamil_star', 'gothram', 'samashrayanam', 'bharanyasam', 'profile_image', 'password'];
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({ message: `Missing required field: ${field}` });
+            }
+        }
+
         let id = 0;
 
         // Find the user by mobile number
         const existingUser = await model.UserData.findOne({ where: { mobile_number: req.body.mobile_number } });
-        
+
         if (existingUser) {
             id = existingUser.id;
         } else {
@@ -310,10 +318,15 @@ const registerUser = async (req, res) => {
             is_rejected: false
         };
 
+        // Ensure that mobile_number is defined
+        if (!data.mobile_number) {
+            return res.status(400).json({ message: "Mobile number is required." });
+        }
+
         // Update the user's data
         await model.UserData.update(data, {
             where: {
-                mobile_number: data["mobile_number"]
+                mobile_number: data.mobile_number
             }
         });
 
@@ -322,6 +335,7 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         // Handle any errors that occurred during the process
+        console.error("Error during registration:", error);
         return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error.message });
     }
 };
