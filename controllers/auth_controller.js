@@ -257,6 +257,52 @@ registerUser = async (req, res) => {
     }
 }
 
+registerAdmin = async (req, res) => {
+    try {
+        const data = {
+            name: req.body.name,
+            mobile_number: req.body.mobile_number,
+            address: req.body.address,
+            country_id: req.body.country_id,
+            country: req.body.country,
+            state_id: req.body.state_id,
+            state: req.body.state,
+            city_id: req.body.city_id,
+            city: req.body.city,
+            area: req.body.area,
+            pincode: req.body.pincode,
+            gender: req.body.gender,
+            dob: req.body.dob,
+            tamil_star_id: req.body.tamil_star_id,
+            tamil_star: req.body.tamil_star,
+            gothram: req.body.gothram,
+            samashrayanam: req.body.samashrayanam,
+            samashrayanam_pattam: req.body.samashrayanam_pattam,
+            bharanyasam: req.body.bharanyasam,
+            bharanyasam_pattam: req.body.bharanyasam_pattam,
+            profile_image: req.body.profile_image,
+            password: req.body.password,
+            user_id: user_id,
+            whatsapp_number: "",
+            user_approved: false,
+            user_status_id: "0",
+            user_status: "Admin",
+            is_registered: true,
+            is_active: false,
+            is_rejected: false
+        }
+
+        await model.UserData.create(data).then((result) => {
+            return res.status(200).json({ message: "Account has been created successfully." });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to signup", error: err });
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error });
+    }
+}
+
 login = async (req, res) => {
     try {
         const data = {
@@ -426,5 +472,6 @@ module.exports = {
     activeUsersList: activeUsersList,
     inActiveUsersList: inActiveUsersList,
     activateDeactivateUser: activateDeactivateUser,
-    createMobileUser: createMobileUser
+    createMobileUser: createMobileUser,
+    registerAdmin:registerAdmin
 }
