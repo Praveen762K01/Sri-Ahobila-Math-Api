@@ -257,11 +257,30 @@ registerUser = async (req, res) => {
     }
 }
 
+checkUser = async (req, res) => {
+    try {
+        const data = {
+            mobile_number: req.body.mobile_number
+        }
+        await model.UserData.findOne({ where: { mobile_number: data["mobile_number"] } }).then((result) => {
+            if (result) {
+                return res.status(200).json({ message: "User Data Found."});
+            }else{
+                return res.status(500).json({ message: "No data found.", error: err });
+            }
+        }).catch((err) => {
+            return res.status(500).json({ message: "Please try again later.", error: err });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error });
+    }
+}
+
 registerAdmin = async (req, res) => {
     try {
         const data = {
             name: req.body.name,
-            email_address:req.body.email_address,
+            email_address: req.body.email_address,
             mobile_number: req.body.mobile_number,
             address: req.body.address,
             country_id: req.body.country_id,
@@ -474,5 +493,6 @@ module.exports = {
     inActiveUsersList: inActiveUsersList,
     activateDeactivateUser: activateDeactivateUser,
     createMobileUser: createMobileUser,
-    registerAdmin:registerAdmin
+    registerAdmin: registerAdmin,
+    checkUser:checkUser
 }
