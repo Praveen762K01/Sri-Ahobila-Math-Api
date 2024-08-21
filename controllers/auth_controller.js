@@ -196,95 +196,19 @@ verifyOtp = async (req, res) => {
     }
 }
 
-// registerUser = async (req, res) => {
-//     try {
-//         let id = 0;
-//         await model.UserData.findOne({ where: { mobile_number: req.body.mobile_number } }).then((result) => {
-//             id = result.id;
-//         }).catch((err) => {
-//             return res.status(500).json({ message: "Please try again later.", error: err });
-//         });
-//         const currentDate = new Date();
-//         const year = currentDate.getFullYear();
-//         const month = currentDate.getMonth() + 1;
-//         const date = currentDate.getDate();
-//         const user_id = "SAMATH" + date + month + year + id;
-//         const data = {
-//             name: req.body.name,
-//             mobile_number: req.body.mobile_number,
-//             address: req.body.address,
-//             country_id: req.body.country_id,
-//             country: req.body.country,
-//             state_id: req.body.state_id,
-//             state: req.body.state,
-//             city_id: req.body.city_id,
-//             city: req.body.city,
-//             area: req.body.area,
-//             pincode: req.body.pincode,
-//             gender: req.body.gender,
-//             dob: req.body.dob,
-//             tamil_star_id: req.body.tamil_star_id,
-//             tamil_star: req.body.tamil_star,
-//             gothram: req.body.gothram,
-//             samashrayanam: req.body.samashrayanam,
-//             samashrayanam_pattam: req.body.samashrayanam_pattam,
-//             bharanyasam: req.body.bharanyasam,
-//             bharanyasam_pattam: req.body.bharanyasam_pattam,
-//             profile_image: req.body.profile_image,
-//             password: req.body.password,
-//             user_id: user_id,
-//             whatsapp_number: "",
-//             user_approved: false,
-//             user_status_id: "",
-//             user_status: "",
-//             is_registered: true,
-//             is_active: false,
-//             is_rejected: false
-//         }
-
-//         await model.UserData.update(data, {
-//             where: {
-//                 mobile_number: data["mobile_number"]
-//             }
-//         }).then((result) => {
-//             return res.status(200).json({ message: "Account has been created successfully." });
-//         }).catch((err) => {
-//             return res.status(500).json({ message: "Not able to signup", error: err });
-//         });
-
-//     } catch (error) {
-//         return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error });
-//     }
-// }
-const registerUser = async (req, res) => {
+registerUser = async (req, res) => {
     try {
-        // Validate required fields
-        const requiredFields = ['name', 'mobile_number', 'address', 'country_id', 'country', 'state_id', 'state', 'city_id', 'city', 'area', 'pincode', 'gender', 'dob', 'tamil_star_id', 'tamil_star', 'gothram', 'samashrayanam', 'bharanyasam', 'profile_image', 'password'];
-        for (const field of requiredFields) {
-            if (!req.body[field]) {
-                return res.status(400).json({ message: `Missing required field: ${field}` });
-            }
-        }
-
         let id = 0;
-
-        // Find the user by mobile number
-        const existingUser = await model.UserData.findOne({ where: { mobile_number: req.body.mobile_number } });
-
-        if (existingUser) {
-            id = existingUser.id;
-        } else {
-            return res.status(404).json({ message: "User not found." });
-        }
-
-        // Generate user_id based on the current date and user id
+        await model.UserData.findOne({ where: { mobile_number: req.body.mobile_number } }).then((result) => {
+            id = result.id;
+        }).catch((err) => {
+            return res.status(500).json({ message: "Please try again later.", error: err });
+        });
         const currentDate = new Date();
         const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month
-        const date = String(currentDate.getDate()).padStart(2, '0'); // Ensure 2-digit date
-        const user_id = `SAMATH${date}${month}${year}${id}`;
-
-        // Prepare the data object for update
+        const month = currentDate.getMonth() + 1;
+        const date = currentDate.getDate();
+        const user_id = "SAMATH" + date + month + year + id;
         const data = {
             name: req.body.name,
             mobile_number: req.body.mobile_number,
@@ -316,30 +240,22 @@ const registerUser = async (req, res) => {
             is_registered: true,
             is_active: false,
             is_rejected: false
-        };
-
-        // Ensure that mobile_number is defined
-        if (!data.mobile_number) {
-            return res.status(400).json({ message: "Mobile number is required." });
         }
 
-        // Update the user's data
         await model.UserData.update(data, {
             where: {
-                mobile_number: data.mobile_number
+                mobile_number: data["mobile_number"]
             }
+        }).then((result) => {
+            return res.status(200).json({ message: "Account has been created successfully." });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Not able to signup", error: err });
         });
 
-        // Return a success response
-        return res.status(200).json({ message: "Account has been created successfully." });
-
     } catch (error) {
-        // Handle any errors that occurred during the process
-        console.error("Error during registration:", error);
-        return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error.message });
+        return res.status(500).json({ message: "Something went wrong, Please try again later.", error: error });
     }
-};
-
+}
 
 registerAdmin = async (req, res) => {
     try {
