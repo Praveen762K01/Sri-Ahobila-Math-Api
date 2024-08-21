@@ -282,7 +282,7 @@ registerAdmin = async (req, res) => {
             bharanyasam_pattam: req.body.bharanyasam_pattam,
             profile_image: req.body.profile_image,
             password: req.body.password,
-            user_id: user_id,
+            user_id: "",
             whatsapp_number: "",
             user_approved: false,
             user_status_id: "0",
